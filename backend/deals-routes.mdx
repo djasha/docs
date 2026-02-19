@@ -1,0 +1,18 @@
+---
+title: "Deals Routes"
+description: "Deals CRUD and progress tracking endpoints."
+---
+
+Implemented in `/server/routes/deals.ts`:
+
+- Deals CRUD: `GET/POST/PUT/PATCH/DELETE /api/deals/*`
+- Bulk operations: `/bulk-delete`, `/bulk-update`, `/bulk-import/*`
+- Progress children: videos, stories, views, payments
+- Utilities: `/due-views`, `/find-by-url`, `/related-users`
+
+## Change guidance
+
+When updating this route group:
+
+1. run integration tests (`tests/integration/deals-api.test.ts`)
+2. re-check related short-link and screenshot integrations

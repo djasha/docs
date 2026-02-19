@@ -1,0 +1,39 @@
+---
+title: "Separate Docs Repo Management"
+description: "How to manage docs in a dedicated GitHub repository and keep Mintlify in sync."
+---
+
+DealDash uses a separate docs repository: `https://github.com/djasha/docs`.
+
+## Recommended Model
+
+- author docs from DealDash source folder: `/mintlify-docs`
+- sync content to `djasha/docs`
+- Mintlify project should point to `djasha/docs` as production content source
+
+## One-Time Setup
+
+1. ensure Mintlify project is linked to `djasha/docs`
+2. set custom domain in Mintlify: `docs.drdj.me`
+3. keep DNS CNAME: `docs -> cname.mintlify-dns.com`
+
+## Sync Command
+
+Use the helper script from DealDash repo:
+
+```bash
+bash scripts/sync-docs-repo.sh /absolute/path/to/local/docs-clone
+```
+
+Then review and push from that docs clone.
+
+## CI/CD Sync Option
+
+You can automate sync with GitHub Actions using a PAT secret (`DOCS_REPO_PAT`) scoped to repo write on `djasha/docs`.
+
+## Safety Rules
+
+- run `pnpm docs:check` before sync
+- review diff in docs repo before push
+- never force-push docs history
+- include clear commit messages for docs changes

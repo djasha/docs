@@ -1,0 +1,43 @@
+---
+title: "Custom Domain (docs.drdj.me)"
+description: "Point docs.drdj.me to Mintlify and verify production routing."
+---
+
+## Target
+
+Serve DealDash docs from `https://docs.drdj.me`.
+
+## DNS record required
+
+Create a **CNAME** record:
+
+- Name/Host: `docs`
+- Target/Value: `cname.mintlify-dns.com`
+- TTL: Auto (or 300)
+
+## Important
+
+- Remove any conflicting `A`/`AAAA` records for `docs.drdj.me`.
+- Keep only one DNS answer path for this host.
+
+## Mintlify side
+
+1. Open project settings in Mintlify.
+2. Add custom domain `docs.drdj.me`.
+3. Wait for verification and certificate issuance.
+
+## Verification
+
+```bash
+dig +short CNAME docs.drdj.me
+curl -I https://docs.drdj.me
+```
+
+Expected:
+
+- CNAME resolves to `cname.mintlify-dns.com`
+- HTTPS returns 200/301 with valid TLS cert
+
+## Canonical URL
+
+This repo sets canonical metadata to `https://docs.drdj.me` in `/mintlify-docs/docs.json`.

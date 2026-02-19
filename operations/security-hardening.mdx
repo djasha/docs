@@ -1,0 +1,21 @@
+---
+title: "Security Hardening"
+description: "Current security posture and hardening controls."
+---
+
+## Current status (2026-02-18)
+
+- `pnpm audit --audit-level=high`: passed
+- `pnpm audit`: passed (no known vulnerabilities)
+
+## What was hardened
+
+1. Upgraded `pnpm` toolchain to patched versions.
+2. Patched transitive `tar` dependency chain.
+3. Removed unused vulnerable dev dependency path.
+4. Added audit checks in CI.
+
+## Keep enforced
+
+- Run `pnpm audit --audit-level=high` in CI.
+- Treat auth/public routes as high-risk change areas.

@@ -1,0 +1,30 @@
+---
+title: "DealDash Skill Blueprint"
+description: "Portable skill template for consistent AI behavior in DealDash tasks."
+---
+
+Use this as the base when creating a reusable DealDash skill.
+
+## Canonical Draft
+
+See `/docs/agents/DEALDASH_AGENT_SKILL.md`.
+
+## Required Workflow In Skill
+
+1. read `/AGENTS.md`
+2. read change safety protocol
+3. run baseline checks
+4. implement scoped change
+5. update docs (`/docs` and `/mintlify-docs`)
+6. run verification checks
+
+## Recommended Skill Guardrails
+
+- call out high-risk paths explicitly
+- require evidence-based handoff
+- enforce typed/validated boundaries for input data
+- require rollback note for risky changes
+
+## Why This Matters
+
+A stable skill definition makes multi-agent execution predictable, reduces regressions, and keeps documentation quality from decaying over time.

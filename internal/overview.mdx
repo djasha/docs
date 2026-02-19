@@ -1,0 +1,38 @@
+---
+title: "Internal Docs Overview"
+description: "How DealDash internal documentation is organized for developers and autonomous agents."
+---
+
+This section is the internal operating handbook for AI agents and developers.
+
+## Goals
+
+- fast onboarding for new agents
+- predictable change safety gates
+- consistent documentation updates as the code evolves
+- explicit ownership for manager/support agent workflows
+
+## Internal Documentation Structure
+
+- `internal/overview`: start here
+- `internal/manager-support-model`: role contract and merge gates
+- `internal/change-protocol`: mandatory preflight, during-change, and postflight checklist
+- `internal/docs-maintenance`: how to keep docs current without drift
+- `internal/skill-blueprint`: reusable skill template for DealDash-specific agent behavior
+
+## Canonical Sources Inside DealDash Repo
+
+- `/AGENTS.md`
+- `/docs/agents/README.md`
+- `/docs/agents/OPENCLAW_MANAGER_PLAYBOOK.md`
+- `/docs/agents/SUPPORT_AGENT_PLAYBOOK.md`
+- `/docs/agents/CHANGE_SAFETY_PROTOCOL.md`
+- `/docs/agents/TASK_ROUTING_MATRIX.md`
+- `/docs/agents/DEALDASH_AGENT_SKILL.md`
+
+## Done Definition For Every Engineering Task
+
+1. behavior change implemented safely
+2. relevant checks pass
+3. docs are updated in the same change
+4. residual risk is written down

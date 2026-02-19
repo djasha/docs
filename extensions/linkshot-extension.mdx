@@ -1,0 +1,29 @@
+---
+title: "LinkShot Extension"
+description: "Architecture and operational notes for LinkShot MV3 extension."
+---
+
+## Location
+
+`/linkshot-extension`
+
+## Key capabilities
+
+- screenshot capture
+- side panel workflow
+- local OCR processing
+- short-link and screenshot sync with backend
+
+## Build
+
+```bash
+cd linkshot-extension
+pnpm install
+pnpm build
+```
+
+## Sensitive areas
+
+- offscreen OCR worker
+- capture permissions
+- upload/auth retry paths

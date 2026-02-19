@@ -1,0 +1,50 @@
+---
+title: "AI Change Protocol"
+description: "Mandatory safety protocol for autonomous and semi-autonomous edits."
+---
+
+This protocol is mandatory for any AI-driven change.
+
+## 1) Preflight
+
+1. confirm target domain:
+   - `client`
+   - `server`
+   - `shared`
+   - `whatsapp-extension-react`
+   - `linkshot-extension`
+2. read relevant docs for the touched domain
+3. run baseline checks:
+   - `pnpm check`
+   - targeted tests for touched area
+
+## 2) During Change
+
+- keep scope tight
+- add or update tests for changed logic
+- avoid silent behavior changes
+- preserve backward compatibility for public APIs unless intentionally versioned
+
+## 3) Postflight
+
+- run validation commands
+- update docs in the same change
+- include residual risk and rollback notes
+
+## High-Risk Paths (Extra Review Required)
+
+- `/server/middleware/auth.ts`
+- `/server/routes/auth.ts`
+- `/server/routes/public.ts`
+- `/server/routes/shares.ts`
+- `/server/routes/external-shares.ts`
+- `/server/lib/googleSheets*`
+- extension auth-sync scripts
+
+## Required Hand-Off Template
+
+- scope completed
+- files changed
+- commands run + results
+- remaining risk
+- recommended next action

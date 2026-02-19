@@ -1,0 +1,22 @@
+---
+title: "Repository Map"
+description: "Where to find each subsystem and critical files."
+---
+
+## Primary folders
+
+- `/client` web UI
+- `/server` API routes, middleware, jobs
+- `/shared` shared contracts
+- `/migrations` SQL schema evolution
+- `/tests` unit/integration/e2e
+- `/whatsapp-extension-react` WhatsApp extension
+- `/linkshot-extension` LinkShot extension
+
+## Critical files
+
+- `/server/index.ts` API bootstrap
+- `/server/middleware/auth.ts` request auth
+- `/server/db/schema.ts` data model
+- `/client/src/contexts/AuthContext.tsx` web auth lifecycle
+- `/client/src/lib/axios.ts` auth header + 401 recovery

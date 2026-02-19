@@ -1,0 +1,47 @@
+---
+title: "Docs Maintenance"
+description: "Process to keep DealDash documentation continuously accurate and easy to evolve."
+---
+
+## Documentation Rule
+
+Any behavior/API/workflow change must include docs updates in the same PR.
+
+## Source of Truth
+
+- codebase docs for internal engineering context: `/docs/*`
+- Mintlify publishable docs: `/mintlify-docs/*`
+
+If they diverge, treat as a bug and fix immediately.
+
+## Validation Commands
+
+```bash
+pnpm docs:check
+pnpm check
+```
+
+Use targeted tests based on the changed area.
+
+## Review Checklist
+
+- nav entry exists for each new page
+- links resolve
+- examples match current behavior
+- environment variables and setup steps are current
+- high-risk path notes are still accurate
+
+## Versioning and Audit Pages
+
+Maintain dated review pages under `mintlify-docs/review/` and `docs/review/`.
+
+Recommended cadence:
+
+- lightweight docs pass: weekly
+- full architecture and risk review: monthly
+
+## Ownership
+
+- manager agent owns quality gate and merge criteria
+- support agent owns implementation-level doc updates
+- both are accountable for docs accuracy

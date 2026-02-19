@@ -1,0 +1,29 @@
+---
+title: "WhatsApp Extension"
+description: "Architecture and operational notes for DealDash WhatsApp MV3 extension."
+---
+
+## Location
+
+`/whatsapp-extension-react`
+
+## Key components
+
+- content app and sidebar
+- header tab controls
+- auth sync bridge
+- notifications/reminders/broadcast panels
+
+## Build
+
+```bash
+cd whatsapp-extension-react
+pnpm install
+pnpm build
+```
+
+## Sensitive areas
+
+- auth sync scripts
+- WhatsApp DOM selector dependencies
+- manifest permissions

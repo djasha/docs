@@ -1,0 +1,26 @@
+---
+title: "Data Model"
+description: "Core entities and relationships in DealDash."
+---
+
+Primary entities:
+
+- `users`
+- `deals`
+- `influencers`
+- `contacts`
+- `tasks`
+- `reminders`
+- `notifications`
+- `team_*` collaboration tables
+- `screenshots`, `short_links`
+
+## Source of truth
+
+- Schema: `/server/db/schema.ts`
+- SQL migrations: `/migrations`
+
+## Notes
+
+- Keep schema changes migration-first.
+- Do not rely on docs-only enums; validate against schema and validators.

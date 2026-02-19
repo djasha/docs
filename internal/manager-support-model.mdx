@@ -1,0 +1,47 @@
+---
+title: "Manager + Support Model"
+description: "Operating model for OpenClaw manager and support agents."
+---
+
+## Roles
+
+`Manager agent`
+
+- turns product requests into scoped technical tasks
+- enforces quality and safety gates before merge
+- tracks risk and follow-up debt
+
+`Support agent`
+
+- implements scoped tasks
+- runs checks
+- updates docs in the same task
+
+## Manager Merge Gate
+
+Every merge request should include:
+
+- changed files list
+- command evidence with pass/fail
+- test evidence relevant to touched paths
+- risk statement and rollback note
+
+Block merge when:
+
+- auth/security changes have no tests
+- docs are stale or contradictory
+- safety checks are skipped without rationale
+
+## Support Agent Contract
+
+For each task:
+
+1. restate scope in one short paragraph
+2. implement smallest safe change
+3. run required checks
+4. update docs
+5. hand back summary + risks
+
+## Routing Rule
+
+Use `internal/change-protocol` and `agents/task-routing` together to assign ownership and validation depth.

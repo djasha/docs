@@ -1,0 +1,31 @@
+---
+title: "Troubleshooting"
+description: "Common problems and fast diagnosis commands."
+---
+
+## API auth failures
+
+- Verify session exists in frontend.
+- Confirm bearer token is attached.
+- Check `/server/middleware/auth.ts` logs.
+
+## Extension cannot reach backend
+
+- Verify extension host permissions.
+- Verify CORS origins in `/server/index.ts`.
+- Verify token sync logic and storage keys.
+
+## Docs checks
+
+```bash
+pnpm docs:check
+```
+
+## Quick health
+
+```bash
+pnpm check
+pnpm test:unit
+pnpm test:integration
+pnpm audit --audit-level=high
+```

@@ -1,122 +1,142 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "DealDash Docs",
+  "description": "Complete technical documentation for DealDash web app, API, extensions, and AI-agent operations.",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#0F766E",
+    "light": "#14B8A6",
+    "dark": "#115E59"
   },
-  "favicon": "/favicon.svg",
+  "seo": {
+    "metatags": {
+      "canonical": "https://docs.drdj.me"
+    }
+  },
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Getting Started",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Onboarding",
             "pages": [
               "index",
-              "quickstart",
-              "development"
-            ]
-          },
-          {
-            "group": "Customization",
-            "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "getting-started/quickstart",
+              "getting-started/agent-onboarding"
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "Platform",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "System",
             "pages": [
-              "api-reference/introduction"
+              "platform/system-overview",
+              "platform/repo-map",
+              "platform/auth-and-session-flow",
+              "platform/data-model"
             ]
-          },
+          }
+        ]
+      },
+      {
+        "tab": "Backend API",
+        "groups": [
           {
-            "group": "Endpoint examples",
+            "group": "Reference",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "backend/api-surface",
+              "backend/auth-routes",
+              "backend/deals-routes",
+              "backend/collaboration-routes"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Extensions",
+        "groups": [
+          {
+            "group": "Chrome Extensions",
+            "pages": [
+              "extensions/whatsapp-extension",
+              "extensions/linkshot-extension"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Operations",
+        "groups": [
+          {
+            "group": "Runbooks",
+            "pages": [
+              "operations/development-workflow",
+              "operations/testing-release",
+              "operations/security-hardening",
+              "operations/troubleshooting",
+              "operations/documentation-governance",
+              "operations/custom-domain-docs-drdj-me",
+              "operations/docs-repo-management"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Internal",
+        "groups": [
+          {
+            "group": "Engineering Handbook",
+            "pages": [
+              "internal/overview",
+              "internal/manager-support-model",
+              "internal/change-protocol",
+              "internal/docs-maintenance",
+              "internal/skill-blueprint"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Agent Ops",
+        "groups": [
+          {
+            "group": "AI Workflows",
+            "pages": [
+              "agents/manager-playbook",
+              "agents/support-playbook",
+              "agents/change-safety",
+              "agents/task-routing"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Review",
+        "groups": [
+          {
+            "group": "Audits",
+            "pages": [
+              "review/codebase-review-2026-02-18"
             ]
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    ]
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "DealDash App",
+      "href": "https://dealdash.neonoir.ai"
     }
-  },
-  "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "github": "https://github.com/djasha/DealDash"
     }
   }
 }

@@ -1,0 +1,19 @@
+---
+title: "Auth Routes"
+description: "Authentication and profile endpoints."
+---
+
+Implemented in `/server/routes/auth.ts`:
+
+- `POST /api/auth/store-google-tokens`
+- `POST /api/auth/create-user-sheet`
+- `POST /api/auth/sync-user`
+- `GET /api/auth/google-status`
+- `GET /api/auth/me`
+- `PUT /api/auth/profile`
+- `GET /api/auth/my-sheet`
+
+## Security notes
+
+- All sensitive actions require valid bearer token.
+- Do not log token values in production changes.

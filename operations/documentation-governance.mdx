@@ -1,18 +1,39 @@
 ---
 title: "Documentation Governance"
-description: "How docs stay reliable as code evolves."
+description: "Policy for keeping docs reliable, current, and automation-friendly."
 ---
 
-## Rules
+## Source of Truth Model
 
-- Behavior changes require docs updates.
-- API changes require API surface updates.
-- Agent workflow changes require agent docs updates.
+- behavior truth: code
+- internal engineering docs: `/docs`
+- published docs: `/mintlify-docs` -> `djasha/docs`
 
-## Validation
+## Required Update Triggers
 
-Run:
+Update docs in same PR when changing:
+
+- API endpoints or schemas
+- auth/session/public route behavior
+- extension permissions/workflows
+- deployment or runbook steps
+
+## Quality Gates
 
 ```bash
 pnpm docs:check
 ```
+
+And for behavior changes:
+
+```bash
+pnpm check
+```
+
+Plus relevant tests.
+
+## Ownership
+
+- manager agent: architecture/operations quality gate
+- support agent: implementation-level docs updates
+- both: prevent docs drift

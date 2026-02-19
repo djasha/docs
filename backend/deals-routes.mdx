@@ -1,18 +1,34 @@
 ---
 title: "Deals Routes"
-description: "Deals CRUD and progress tracking endpoints."
+description: "Deals CRUD, progress tracking, and bulk workflow route family."
 ---
 
-Implemented in `/server/routes/deals.ts`:
+Primary implementation: `/server/routes/deals.ts`.
 
-- Deals CRUD: `GET/POST/PUT/PATCH/DELETE /api/deals/*`
-- Bulk operations: `/bulk-delete`, `/bulk-update`, `/bulk-import/*`
-- Progress children: videos, stories, views, payments
-- Utilities: `/due-views`, `/find-by-url`, `/related-users`
+## Route Capabilities
 
-## Change guidance
+- CRUD endpoints for deal records
+- bulk update/delete/import operations
+- related deal analytics and helper lookups
+- deal-progress children (videos, stories, views, payments)
 
-When updating this route group:
+## Typical Dependencies
 
-1. run integration tests (`tests/integration/deals-api.test.ts`)
-2. re-check related short-link and screenshot integrations
+- influencer/contact joins
+- tasks/reminders triggered from deal state changes
+- activity logging and analytics endpoints
+
+## Testing Expectations
+
+When deals routes change:
+
+1. run deal-focused integration tests
+2. test at least one end-to-end deal lifecycle path
+3. verify filtering/sorting/pagination behavior
+4. confirm schema and status values remain consistent
+
+## Common Risk Areas
+
+- enum/status drift between DB, frontend, and AI schema endpoint
+- partial updates overwriting nullable fields incorrectly
+- bulk endpoints skipping validation or auth checks

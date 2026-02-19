@@ -1,13 +1,32 @@
 ---
-title: "Codebase Review 2026-02-18"
-description: "AI-readiness and reliability review snapshot."
+title: "Codebase Review (2026-02-18)"
+description: "Full-repo review summary focused on AI-agent readiness, safety, and reliability."
 ---
 
-## Key findings
+## Scope
 
-1. Security dependency debt (high priority)
-2. Documentation drift from reality
-3. AI schema drift risk
-4. High `any` usage in critical backend routes
+Repository-wide review of architecture clarity, operational safety, testing baseline, dependency posture, and docs quality for autonomous agent usage.
 
-Full report: `/docs/review/CODEBASE_REVIEW_2026-02-18.md`
+## Validation Snapshot
+
+- `pnpm check`: pass
+- `pnpm test:unit`: pass
+- `pnpm test:integration`: pass
+- `pnpm test:e2e`: pass
+- `pnpm audit --audit-level=high`: pass
+- `pnpm docs:check`: pass
+
+## Findings
+
+1. Dependency security debt was addressed via version/override hardening.
+2. Documentation drift existed across onboarding and architecture references.
+3. AI schema endpoint (`/api/ai/*`) can drift from runtime contracts if not maintained alongside route/schema changes.
+4. High `any` density in backend paths increases risk for autonomous edits.
+5. CI warning noise (non-failing) still reduces signal quality.
+
+## Recommendations
+
+- maintain docs-first merge gates
+- keep API/AI schema docs synchronized with route behavior
+- reduce `any` usage in high-risk route files incrementally
+- preserve `docs:check` and security audit in CI

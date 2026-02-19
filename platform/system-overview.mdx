@@ -1,25 +1,32 @@
 ---
 title: "System Overview"
-description: "DealDash architecture across web app, API, database, and extensions."
+description: "Platform-level view of DealDash architecture, runtime components, and responsibilities."
 ---
 
-DealDash is a multi-surface platform:
+DealDash is a multi-surface system with shared data and permission boundaries.
+
+## Components
 
 1. React web app (`/client`)
 2. Express API (`/server`)
-3. Supabase Postgres/Auth
+3. Supabase/Postgres data and auth
 4. WhatsApp MV3 extension (`/whatsapp-extension-react`)
 5. LinkShot MV3 extension (`/linkshot-extension`)
 
-## Core capabilities
+## Core Product Domains
 
-- Deals, influencers, contacts
-- Tasks/reminders/calendar
-- Templates and message templates
-- Team collaboration and sharing
-- Screenshot tracking and short links
+- deal lifecycle and influencer tracking
+- contacts, notes, reminders, tasks
+- messaging templates and workflows
+- collaboration (teams/users/shares)
+- screenshots and short links
 
-## Runtime ports
+## Runtime Endpoints (local defaults)
 
-- Web frontend: `http://localhost:3000`
-- API server: `http://localhost:3333`
+- web app: Vite dev server (`http://localhost:5173` unless overridden)
+- API: `http://localhost:3333`
+- health: `http://localhost:3333/api/health`
+
+## Operating Principle
+
+All behavior changes should include code updates, test validation, and docs updates in the same change set.

@@ -1,0 +1,146 @@
+---
+title: "Known Problems Catalog"
+description: "Categorized registry of current, monitoring, and recently resolved DealDash problems."
+---
+
+This page is the canonical issue catalog for developers and AI agents.
+
+## Severity Model
+
+- `P0`: security/data loss/production outage risk
+- `P1`: major reliability or delivery blocker
+- `P2`: important correctness/maintainability risk
+- `P3`: low-risk debt/noise
+
+## Active Problems
+
+### KD-001: AI schema drift risk (`P2`, Active)
+
+- Symptoms: automation chooses invalid status/action values.
+- Impact: failed automated workflows or incorrect route calls.
+- Root cause: `/api/ai/*` schema in `/server/routes/ai-schema.ts` is manually maintained.
+- Detection:
+
+```bash
+rg -n "status|enum|actions" server/routes/ai-schema.ts server/db/schema.ts
+```
+
+- Fix:
+  1. align `ai-schema.ts` with runtime schema/validators
+  2. add/expand integration coverage for touched route contracts
+  3. update docs pages in `backend/*`
+
+### KD-002: High `any` density in backend (`P2`, Active)
+
+- Symptoms: typecheck passes while runtime bugs still slip through.
+- Impact: unsafe autonomous edits and weaker refactor confidence.
+- Root cause: permissive typing in critical route/data-transform paths.
+- Detection:
+
+```bash
+rg -n "\bany\b" server shared
+```
+
+- Fix:
+  1. prioritize `server/routes/deals.ts`, `server/routes/teams.ts`, `server/routes/tasks.ts`
+  2. replace `any` with explicit types/zod-validated shapes
+  3. verify with `pnpm check` + targeted tests
+
+### KD-003: Test warning noise (`P3`, Active)
+
+- Symptoms: CI logs include noisy React/Node warnings despite passing tests.
+- Impact: reduced signal quality for agent-driven triage.
+- Root cause: legacy test patterns and warning-producing dependencies.
+- Detection:
+
+```bash
+pnpm test:unit
+pnpm test:integration
+```
+
+- Fix:
+  1. eliminate `act(...)` warnings in failing test patterns
+  2. reduce non-actionable Node warning output
+  3. track warning count trend in review notes
+
+### KD-004: Legacy docs ambiguity (`P2`, Active)
+
+- Symptoms: contributors follow historical docs and execute stale workflows.
+- Impact: inconsistent implementation and onboarding mistakes.
+- Root cause: valuable historical docs still mixed with active docs.
+- Detection:
+
+```bash
+find docs -maxdepth 2 -type f | sort
+```
+
+- Fix:
+  1. keep active truth in `/docs` + `/mintlify-docs`
+  2. progressively move historical docs to explicit legacy buckets
+  3. maintain dated audit pages for each docs cycle
+
+## Monitoring Problems
+
+### KD-005: Mintlify source configuration drift (`P1`, Monitoring)
+
+- Symptoms: `docs.drdj.me` shows old starter content after repo updates.
+- Impact: published docs diverge from current codebase.
+- Root cause: Mintlify project source/path misconfiguration.
+- Detection:
+
+```bash
+curl -sL https://docs.drdj.me | rg -n "DealDash Docs|Mint Starter Kit"
+```
+
+- Fix:
+  1. repo = `djasha/docs`, branch = `main`
+  2. monorepo = off, docs path = root (`.` or empty)
+  3. redeploy and verify title/navigation
+
+### KD-006: Extension origin/CORS misconfig risk (`P1`, Monitoring)
+
+- Symptoms: extension requests fail with auth/CORS issues.
+- Impact: extension workflows break in dev or production.
+- Root cause: mismatch between extension origin and backend allowlist.
+- Detection:
+
+```bash
+rg -n "WHATSAPP_EXTENSION_ORIGIN|LINKSHOT_EXTENSION_ORIGIN|cors" server/index.ts
+```
+
+- Fix:
+  1. set correct extension origins in environment
+  2. verify API calls include bearer token
+  3. smoke test both extensions after auth changes
+
+## Recently Resolved
+
+### KD-007: Dependency vulnerability chain (`P0`, Resolved 2026-02-18)
+
+- Resolution: dependency overrides/tooling hardening + vulnerable chain removal.
+- Validation:
+
+```bash
+pnpm audit --audit-level=high
+pnpm audit
+```
+
+### KD-008: Broken onboarding references (`P1`, Resolved in docs refresh)
+
+- Resolution: README and onboarding docs were rewritten to current structure.
+- Validation:
+
+```bash
+pnpm docs:check
+```
+
+## Required Issue Entry Format (for new problems)
+
+- ID: `KD-###`
+- Severity and status
+- symptoms
+- impact
+- root cause
+- detection command(s)
+- fix checklist
+- verification command(s)

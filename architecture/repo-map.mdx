@@ -1,6 +1,35 @@
 ---
-title: "Repository Map (Legacy Path)"
-description: "Moved to Platform tab."
+title: "Architecture: Repo Map"
+description: "Directory map and critical files for safe navigation and change planning."
 ---
 
-This page moved to `/platform/repo-map`.
+## Top-Level Folders
+
+- `/client`: frontend UI and state management
+- `/server`: API, middleware, background jobs
+- `/shared`: cross-layer constants/types/utilities
+- `/migrations`: schema migration artifacts
+- `/tests`: unit, integration, e2e suites
+- `/whatsapp-extension-react`: WhatsApp browser extension
+- `/linkshot-extension`: LinkShot browser extension
+- `/docs`: internal source docs
+- `/mintlify-docs`: published documentation source
+
+## Critical Files
+
+- `/AGENTS.md`: top-level agent contract
+- `/server/index.ts`: route registration and middleware order
+- `/server/middleware/auth.ts`: auth enforcement
+- `/server/db/schema.ts`: schema source of truth
+- `/client/src/contexts/AuthContext.tsx`: frontend auth lifecycle
+- `/client/src/lib/axios.ts`: API auth header and 401 behavior
+
+## Route Families (mounted in `/server/index.ts`)
+
+- auth/profile: `/api/auth`
+- business entities: `/api/deals`, `/api/influencers`, `/api/contacts`, `/api/tasks`
+- collaboration: `/api/teams`, `/api/users`, `/api/shares`, `/api/shares/external`
+- utilities: `/api/screenshots`, `/api/shorten`, `/r`, `/api/ai`
+- public surface: `/api/public`
+
+Use this map to scope blast radius before editing.

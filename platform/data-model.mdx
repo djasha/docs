@@ -1,26 +1,28 @@
 ---
 title: "Data Model"
-description: "Core entities and relationships in DealDash."
+description: "Primary entities and schema ownership model for DealDash data."
 ---
 
-Primary entities:
+## Core Entity Groups
 
-- `users`
-- `deals`
-- `influencers`
-- `contacts`
-- `tasks`
-- `reminders`
-- `notifications`
-- `team_*` collaboration tables
-- `screenshots`, `short_links`
+- identity: `users`
+- delivery: `deals`, `influencers`, `contacts`
+- execution: `tasks`, `reminders`, `notifications`
+- collaboration: `team_*` tables, shares, user assignments
+- media/links: `screenshots`, `short_links`
 
-## Source of truth
+## Source of Truth
 
-- Schema: `/server/db/schema.ts`
-- SQL migrations: `/migrations`
+- canonical schema: `/server/db/schema.ts`
+- migrations: `/migrations`
 
-## Notes
+## Schema Change Rules
 
-- Keep schema changes migration-first.
-- Do not rely on docs-only enums; validate against schema and validators.
+1. migration-first updates
+2. update route validation and types in same change
+3. run integration tests for impacted flows
+4. update docs when entity or enum semantics change
+
+## Drift Prevention
+
+Do not rely on docs-only enums for automation decisions. Validate against schema definitions and route validation logic.

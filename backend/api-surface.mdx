@@ -1,25 +1,39 @@
 ---
 title: "API Surface"
-description: "High-level map of DealDash backend endpoints."
+description: "Route-family map for planning, testing, and safe AI-assisted changes."
 ---
 
-## Main route families
+This is a planning map, not a strict OpenAPI replacement.
 
-- `/api/auth/*`
-- `/api/deals/*`
-- `/api/contacts/*`
-- `/api/tasks/*`
-- `/api/teams/*`
-- `/api/screenshots/*`
-- `/api/shorten/*`
-- `/api/public/*`
+## Primary Route Files
 
-## AI documentation endpoints
+- `/server/routes/auth.ts`
+- `/server/routes/deals.ts`
+- `/server/routes/contacts.ts`
+- `/server/routes/tasks.ts`
+- `/server/routes/teams.ts`
+- `/server/routes/public.ts`
+- `/server/routes/screenshots.ts`
+- `/server/routes/shortener.ts`
+- `/server/routes/ai-schema.ts`
 
-- `/api/ai/schema`
-- `/api/ai/entities`
-- `/api/ai/actions`
+## Mounted Families
 
-## Route source
+- `GET/POST/... /api/auth/*`
+- `GET/POST/... /api/deals/*`
+- `GET/POST/... /api/contacts/*`
+- `GET/POST/... /api/tasks/*`
+- `GET/POST/... /api/teams/*`
+- `GET /api/public/*` (public-facing)
+- `GET/POST /api/screenshots/*` (auth protected)
+- `GET/POST /api/shorten/*` and `GET /r/*`
+- `GET /api/ai/schema|entities|actions`
 
-See route files in `/server/routes`.
+## Validation Rule
+
+When changing any route family:
+
+1. run targeted integration tests
+2. run `pnpm check`
+3. update docs for endpoint behavior changes
+4. include risk note for auth/public exposure changes

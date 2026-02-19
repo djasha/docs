@@ -1,6 +1,36 @@
 ---
-title: "System Overview (Legacy Path)"
-description: "Moved to Platform tab."
+title: "Architecture: System Overview"
+description: "High-level architecture of DealDash across web, API, extensions, and data flows."
 ---
 
-This page moved to `/platform/system-overview`.
+DealDash is a multi-surface product with a shared data model and role-based operations.
+
+## Core Surfaces
+
+1. Web app (`/client`, React + Vite)
+2. API server (`/server`, Express + Drizzle)
+3. WhatsApp extension (`/whatsapp-extension-react`, Manifest V3)
+4. LinkShot extension (`/linkshot-extension`, Manifest V3 + OCR/offscreen)
+
+## Core Domains
+
+- authentication and user identity
+- deals and influencer tracking
+- contacts, notes, reminders, tasks
+- templates and messaging workflows
+- screenshots, short links, external sharing
+- teams and collaboration
+
+## Runtime Composition
+
+- API routes mounted in `/server/index.ts`
+- schema and migrations owned by `/server/db/schema.ts` and `/migrations`
+- shared types/helpers in `/shared`
+- route-level risk concentrated in auth/public/share endpoints
+
+## Design Constraints for AI Agents
+
+- prefer small, additive changes
+- preserve backward compatibility unless planned migration exists
+- update docs in the same change as behavior updates
+- include verification evidence in every handoff

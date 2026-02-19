@@ -1,24 +1,31 @@
 ---
 title: "Auth and Session Flow"
-description: "How web app, API, and extensions authenticate users."
+description: "Authentication path across web app, API middleware, and extensions."
 ---
 
-## Web app flow
+## Web App Authentication Path
 
-1. User signs in with Supabase Auth.
-2. Frontend stores session and injects bearer token into API calls.
-3. API validates token in `/server/middleware/auth.ts`.
-4. API maps Supabase user to local DB user and enforces authorization.
+1. user signs in via Supabase Auth
+2. frontend keeps session state in auth context
+3. API requests include bearer token
+4. backend validates token in `/server/middleware/auth.ts`
+5. backend maps identity to local user and enforces authorization
 
-## Extension flow
+## Extension Authentication Path
 
-- Extensions sync auth state from DealDash context into extension storage.
-- Requests to API include bearer token from synced session.
+- extensions sync authenticated state from DealDash app context
+- extension API calls send bearer token
+- backend validates tokens with same middleware rules
 
-## High-risk paths
+## Sensitive Coupling Points
 
-- `/server/middleware/auth.ts`
-- `/server/routes/auth.ts`
-- extension auth-sync scripts
+- CORS/origin allowlist in `/server/index.ts`
+- token parsing/verification logic in auth middleware
+- extension auth sync storage and refresh behavior
 
-Changes in these areas require integration tests and regression checks.
+## Required Checks for Auth Changes
+
+- unauthorized/expired token handling
+- cross-surface parity (web + extension)
+- no public route leakage of private data
+- integration/e2e coverage for changed flows

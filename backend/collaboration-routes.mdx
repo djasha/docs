@@ -1,22 +1,31 @@
 ---
 title: "Collaboration Routes"
-description: "Teams, sharing, and collaboration endpoint groups."
+description: "Teams, users, shares, and external sharing pathways."
 ---
 
-## Team routes
+Collaboration behavior spans:
 
-Source: `/server/routes/teams.ts`
-
-- team CRUD
-- invitations and membership
-- shared entities
-- team messages, tasks, activity, whiteboards
-
-## Share routes
-
+- `/server/routes/teams.ts`
+- `/server/routes/users.ts`
 - `/server/routes/shares.ts`
 - `/server/routes/external-shares.ts`
 
-## Risk profile
+## Responsibilities
 
-These routes are permission-sensitive. Every change must include auth/permission tests.
+- team-level access controls
+- user assignment and visibility boundaries
+- internal and external share lifecycle
+- permission checks for shared resources
+
+## Security Model Notes
+
+- collaboration routes are high sensitivity
+- share tokens/IDs must not leak private metadata
+- role checks should be explicit and test-backed
+
+## Required Validation
+
+- integration tests for permission boundaries
+- negative tests for unauthorized access
+- verification of external share expiration/revocation behavior
+- docs update when permission or sharing semantics change

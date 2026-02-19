@@ -1,19 +1,47 @@
 ---
 title: "Agent Onboarding"
-description: "How to run manager and support agents safely."
+description: "Mandatory onboarding path for OpenClaw manager and support agents."
 ---
 
-## Roles
+## Required Reading Order
 
-- Manager agent: planning, gating, risk control
-- Support agent: implementation and validation
+1. `/AGENTS.md`
+2. `Internal > AI Change Protocol`
+3. `Platform > Repo Map`
+4. `Operations > Development Workflow`
+5. `Operations > Security Hardening`
 
-## Non-negotiables
+## Baseline Commands Before Work
 
-1. Run typecheck/tests before merge.
-2. Update docs in the same task.
-3. No destructive git operations without explicit approval.
+```bash
+pnpm check
+pnpm test:unit
+pnpm test:integration
+```
 
-## Routing
+For UI/auth/public-route tasks, add:
 
-Use `/docs/agents/TASK_ROUTING_MATRIX.md` for ownership and validation mapping.
+```bash
+pnpm test:e2e
+```
+
+## Required Handoff Format
+
+Every completed task must include:
+
+- scope delivered
+- files changed
+- commands run and results
+- residual risk
+- rollback note
+
+## High-Risk Areas
+
+Require extra review when touching:
+
+- `/server/middleware/auth.ts`
+- `/server/routes/auth.ts`
+- `/server/routes/public.ts`
+- `/server/routes/shares.ts`
+- `/server/routes/external-shares.ts`
+- extension auth sync scripts

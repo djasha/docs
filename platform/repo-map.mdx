@@ -1,22 +1,32 @@
 ---
-title: "Repository Map"
-description: "Where to find each subsystem and critical files."
+title: "Repo Map"
+description: "Platform-oriented map of critical folders and files for fast onboarding."
 ---
 
-## Primary folders
+## Key Folders
 
-- `/client` web UI
-- `/server` API routes, middleware, jobs
-- `/shared` shared contracts
-- `/migrations` SQL schema evolution
-- `/tests` unit/integration/e2e
-- `/whatsapp-extension-react` WhatsApp extension
-- `/linkshot-extension` LinkShot extension
+- `/client`: frontend application
+- `/server`: API routes, middleware, jobs
+- `/shared`: shared contracts/helpers
+- `/migrations`: schema migrations
+- `/tests`: unit/integration/e2e suites
+- `/whatsapp-extension-react`: WhatsApp extension
+- `/linkshot-extension`: LinkShot extension
 
-## Critical files
+## High-Value Files
 
-- `/server/index.ts` API bootstrap
-- `/server/middleware/auth.ts` request auth
-- `/server/db/schema.ts` data model
-- `/client/src/contexts/AuthContext.tsx` web auth lifecycle
-- `/client/src/lib/axios.ts` auth header + 401 recovery
+- `/server/index.ts`: middleware and route mount order
+- `/server/middleware/auth.ts`: authentication enforcement
+- `/server/db/schema.ts`: entity and enum definitions
+- `/client/src/contexts/AuthContext.tsx`: frontend auth state lifecycle
+- `/client/src/lib/axios.ts`: auth header + 401 handling
+
+## Navigation Rule
+
+Before editing, locate blast radius across:
+
+- API route file
+- schema/model definitions
+- frontend consumers
+- tests
+- docs pages

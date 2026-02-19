@@ -78,6 +78,7 @@
               "operations/testing-release",
               "operations/security-hardening",
               "operations/troubleshooting",
+              "operations/known-problems-catalog",
               "operations/documentation-governance",
               "operations/custom-domain-docs-drdj-me",
               "operations/docs-repo-management"
@@ -119,9 +120,7 @@
         "groups": [
           {
             "group": "Audits",
-            "pages": [
-              "review/codebase-review-2026-02-18"
-            ]
+            "pages": ["review/codebase-review-2026-02-18"]
           }
         ]
       }

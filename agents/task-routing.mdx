@@ -1,9 +1,18 @@
 ---
 title: "Task Routing"
-description: "Route tasks to correct owner and test gate."
+description: "Ownership matrix for assigning tasks to manager or support agents."
 ---
 
-- Auth/security tasks -> manager + support + integration tests
-- API route changes -> support + integration tests + API docs update
-- Extension changes -> support + extension build + auth flow smoke
-- Docs changes -> support + docs check
+## Routing Matrix
+
+| Task Type | Primary Owner | Minimum Checks | Docs Update |
+|---|---|---|---|
+| Auth/session bug | Manager + Support | `pnpm check`, integration, e2e | Security runbook |
+| New API endpoint | Support | `pnpm check`, integration | API surface docs |
+| UI feature | Support | `pnpm check`, unit/e2e as needed | Platform/repo-map when structure changes |
+| DB schema change | Manager | migration verification + integration | System overview/data model |
+| Extension change | Support | extension build + auth sync smoke | Extension page |
+| Security hardening | Manager | `pnpm audit`, targeted/full tests | Security runbook |
+| Docs-only change | Support | `pnpm docs:check` | changed page |
+
+Use this table with `Internal > AI Change Protocol` before assigning work.

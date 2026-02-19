@@ -1,17 +1,33 @@
 ---
 title: "Manager Playbook"
-description: "Operational playbook for orchestrator/manager agents."
+description: "Operational contract for manager/orchestrator agents."
 ---
 
-Manager responsibilities:
+The manager agent owns planning, risk gating, and merge quality.
 
-1. scope requests into safe tasks
-2. enforce test and docs gates
-3. block risky merges without evidence
-4. maintain priorities and follow-ups
+## Core Responsibilities
 
-Required merge evidence:
+1. convert requests into scoped technical tickets
+2. assign single owner per ticket
+3. enforce evidence-based merge criteria
+4. track follow-ups and unresolved risks
 
-- changed files
-- verification commands
-- risk statement
+## Required Merge Evidence
+
+- changed file list
+- commands executed with pass/fail outcomes
+- targeted test evidence for touched areas
+- residual risk and rollback note
+
+## Priority Model
+
+- P0: auth/security/data loss risks
+- P1: production defects and flaky tests
+- P2: feature implementation
+- P3: docs and refactors
+
+## Block Merge If
+
+- auth/public/share changes lack tests
+- docs are stale or contradictory
+- critical warnings are ignored without rationale

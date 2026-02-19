@@ -1,20 +1,46 @@
 ---
 title: "Development Workflow"
-description: "Daily workflow and merge gates."
+description: "Daily engineering workflow and merge gates for DealDash contributors and agents."
 ---
 
-## Daily commands
+## Daily Command Set
 
 ```bash
 pnpm dev:full
 pnpm check
 pnpm test:unit
 pnpm test:integration
+pnpm docs:check
 ```
 
-## Merge gates
+Add `pnpm test:e2e` for auth/public/UI-routing changes.
+
+## Required Merge Gates
 
 1. typecheck passes
 2. relevant tests pass
-3. docs updated
-4. risk note included
+3. docs updated in same change
+4. risk note and rollback note included
+
+## Branch and Scope Rules
+
+- keep one logical change per PR
+- avoid mixed feature + refactor + schema bundles
+- escalate risky auth/public changes for manager review
+
+## Extension Workflow
+
+WhatsApp:
+
+```bash
+cd /whatsapp-extension-react
+pnpm dev
+pnpm build
+```
+
+LinkShot:
+
+```bash
+cd /linkshot-extension
+pnpm build
+```

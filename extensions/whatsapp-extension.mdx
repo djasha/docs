@@ -1,29 +1,34 @@
 ---
 title: "WhatsApp Extension"
-description: "Architecture and operational notes for DealDash WhatsApp MV3 extension."
+description: "Manifest V3 extension used to sync WhatsApp contacts and workflows into DealDash."
 ---
 
-## Location
+Implementation root: `/whatsapp-extension-react`.
 
-`/whatsapp-extension-react`
+## Responsibilities
 
-## Key components
+- capture contact/chat context from WhatsApp Web
+- sync selected data into DealDash backend
+- support auth-aware interactions with DealDash APIs
 
-- content app and sidebar
-- header tab controls
-- auth sync bridge
-- notifications/reminders/broadcast panels
+## High-Risk Areas
 
-## Build
+- auth token propagation and refresh behavior
+- permissions declared in `public/manifest.json`
+- message/contact parsing assumptions from WhatsApp DOM
+
+## Change Workflow
 
 ```bash
-cd whatsapp-extension-react
+cd /whatsapp-extension-react
 pnpm install
+pnpm dev
 pnpm build
 ```
 
-## Sensitive areas
+## Validation
 
-- auth sync scripts
-- WhatsApp DOM selector dependencies
-- manifest permissions
+- extension builds without errors
+- auth flow works with target backend
+- contact sync does not duplicate or corrupt records
+- permission set remains minimal

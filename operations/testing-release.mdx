@@ -1,17 +1,32 @@
 ---
 title: "Testing and Release"
-description: "Validation matrix and release safety checklist."
+description: "Release checklist and test matrix for production-safe deployments."
 ---
 
-## Baseline (2026-02-18)
+## Baseline Test Matrix
 
-- Unit: pass
-- Integration: pass
-- E2E: pass
+```bash
+pnpm check
+pnpm test:unit
+pnpm test:integration
+pnpm docs:check
+```
 
-## Release checklist
+Add as required:
 
-1. Pull latest main
-2. Run test matrix
-3. Run docs checks
-4. Confirm no secret leakage
+```bash
+pnpm test:e2e
+pnpm audit --audit-level=high
+```
+
+## Release Checklist
+
+1. pull latest `main`
+2. run full validation for touched scope
+3. verify docs updates are included
+4. verify no secrets/config leakage
+5. verify rollback path is documented
+
+## Noise Debt
+
+Non-failing warnings (for example React `act(...)` warnings) should be reduced over time to keep CI signal clean for agent-driven execution.

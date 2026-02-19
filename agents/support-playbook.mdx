@@ -1,11 +1,29 @@
 ---
 title: "Support Playbook"
-description: "Execution playbook for implementation agents."
+description: "Execution contract for implementation-focused support agents."
 ---
 
-Support agent contract:
+Support agents deliver scoped implementation safely and quickly.
 
-1. implement smallest safe change
-2. run relevant tests
-3. update docs in same task
-4. provide concise change summary + risk notes
+## Execution Contract
+
+1. restate scope in one paragraph
+2. implement smallest safe change
+3. run required checks
+4. update docs in the same task
+5. report residual risk clearly
+
+## Required Task Output
+
+- behavior implemented
+- files changed
+- command results
+- remaining risk
+- recommended next action
+
+## Safe Defaults
+
+- prefer additive edits over broad rewrites
+- avoid mixing feature + refactor + schema changes in one patch
+- use explicit types and validation boundaries
+- isolate extension changes per extension folder

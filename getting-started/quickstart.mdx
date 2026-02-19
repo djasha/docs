@@ -1,26 +1,43 @@
 ---
 title: "Quickstart"
-description: "Run DealDash locally and validate core health."
+description: "Run DealDash locally and verify baseline health in under 15 minutes."
 ---
 
-## Install and run
+## Prerequisites
+
+- Node.js 20+
+- `pnpm` 10+
+- local Postgres/Supabase credentials
+- `.env` based on project environment template
+
+## Install and Run
 
 ```bash
 pnpm install
 pnpm dev:full
 ```
 
-## Validate baseline
+`pnpm dev:full` runs backend and frontend together.
+
+## Verify Baseline
 
 ```bash
 pnpm check
 pnpm test:unit
 pnpm test:integration
-pnpm test:e2e
+pnpm docs:check
 ```
 
-## Required reading
+Run `pnpm test:e2e` for UI/auth/public route changes.
 
-- `/docs/agents/CHANGE_SAFETY_PROTOCOL.md`
-- `/docs/architecture/REPO_MAP.md`
-- `/docs/operations/DEVELOPMENT_WORKFLOW.md`
+## Common Local URLs
+
+- app: `http://localhost:5173` (Vite default)
+- API: `http://localhost:3333/api`
+- health: `http://localhost:3333/api/health`
+
+## First-Day Safety Rules
+
+- keep PR scope narrow
+- do not ship behavior changes without docs updates
+- do not touch auth/public routes without tests

@@ -1,22 +1,32 @@
 ---
 title: "Change Safety"
-description: "Preflight/during/postflight protocol for autonomous edits."
+description: "Mandatory preflight/during/postflight protocol for AI-driven edits."
 ---
 
 ## Preflight
 
-- identify subsystem
-- read relevant docs
-- run baseline checks
+1. identify domain (`client`, `server`, `shared`, extension)
+2. read the relevant docs pages
+3. run baseline checks (`pnpm check` + targeted tests)
 
-## During
+## During Change
 
-- keep scope small
+- keep scope small and auditable
 - avoid silent behavior changes
-- preserve backwards compatibility unless explicitly planned
+- preserve backward compatibility unless migration is explicit
+- add tests for modified logic paths
 
 ## Postflight
 
-- run verification
-- update docs
-- list remaining risks
+- run validation commands
+- update docs for behavior changes
+- include risk and rollback note
+
+## Extra-Review Paths
+
+- `/server/middleware/auth.ts`
+- `/server/routes/auth.ts`
+- `/server/routes/public.ts`
+- `/server/routes/shares.ts`
+- `/server/routes/external-shares.ts`
+- extension auth sync scripts

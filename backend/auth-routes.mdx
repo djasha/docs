@@ -1,19 +1,31 @@
 ---
 title: "Auth Routes"
-description: "Authentication and profile endpoints."
+description: "Authentication and session-related route patterns and change safety notes."
 ---
 
-Implemented in `/server/routes/auth.ts`:
+Implemented primarily in `/server/routes/auth.ts` with enforcement in `/server/middleware/auth.ts`.
 
-- `POST /api/auth/store-google-tokens`
-- `POST /api/auth/create-user-sheet`
-- `POST /api/auth/sync-user`
-- `GET /api/auth/google-status`
-- `GET /api/auth/me`
-- `PUT /api/auth/profile`
-- `GET /api/auth/my-sheet`
+## Responsibilities
 
-## Security notes
+- validate bearer/session identity
+- map authenticated user to local domain records
+- expose profile/session endpoints used by frontend and extensions
 
-- All sensitive actions require valid bearer token.
-- Do not log token values in production changes.
+## Sensitive Dependencies
+
+- Supabase token verification behavior
+- CORS + extension origin settings in `/server/index.ts`
+- frontend auth handling in `/client/src/contexts/AuthContext.tsx`
+
+## Change Checklist
+
+- verify unauthorized, expired, and invalid token flows
+- confirm no regression in extension auth-sync behavior
+- run auth-focused integration/e2e tests
+- verify no public route gained private data exposure
+
+## High-Risk Anti-Patterns
+
+- broad auth bypasses
+- silent fallback to unauthenticated identity
+- changing token parsing without end-to-end verification

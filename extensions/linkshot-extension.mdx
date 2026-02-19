@@ -1,29 +1,33 @@
 ---
 title: "LinkShot Extension"
-description: "Architecture and operational notes for LinkShot MV3 extension."
+description: "Manifest V3 extension for screenshot capture, OCR, and share/link workflows."
 ---
 
-## Location
+Implementation root: `/linkshot-extension`.
 
-`/linkshot-extension`
+## Responsibilities
 
-## Key capabilities
+- capture and annotate screenshots
+- optional OCR/offscreen processing
+- create and manage shareable links through backend APIs
 
-- screenshot capture
-- side panel workflow
-- local OCR processing
-- short-link and screenshot sync with backend
+## High-Risk Areas
 
-## Build
+- offscreen/document permissions
+- clipboard/file handling security
+- auth synchronization with DealDash backend
+
+## Change Workflow
 
 ```bash
-cd linkshot-extension
+cd /linkshot-extension
 pnpm install
 pnpm build
 ```
 
-## Sensitive areas
+## Validation
 
-- offscreen OCR worker
-- capture permissions
-- upload/auth retry paths
+- screenshot capture works on supported pages
+- OCR behavior is deterministic and does not leak data
+- generated links resolve correctly through `/r/*`
+- permission scope is justified and reviewed

@@ -1,31 +1,105 @@
 ---
 title: "Troubleshooting"
-description: "Common problems and fast diagnosis commands."
+description: "Structured diagnosis paths for setup, runtime, test, extension, docs, and deployment issues."
 ---
 
-## API auth failures
+Use this page for fast triage. Use `Operations > Known Problems Catalog` for the complete categorized issue registry.
 
-- Verify session exists in frontend.
-- Confirm bearer token is attached.
-- Check `/server/middleware/auth.ts` logs.
+## 1) Local Startup
 
-## Extension cannot reach backend
+Symptoms:
 
-- Verify extension host permissions.
-- Verify CORS origins in `/server/index.ts`.
-- Verify token sync logic and storage keys.
+- app/server fails to start
+- unexpected auth or DB connection errors
 
-## Docs checks
+Checks:
+
+```bash
+pnpm install
+pnpm check
+pnpm dev:server
+```
+
+Actions:
+
+1. verify `.env` and Supabase/DB credentials
+2. confirm ports are not already in use
+3. run API health check: `curl -s http://localhost:3333/api/health`
+
+## 2) Test/CI Failures
+
+Symptoms:
+
+- unit/integration/e2e failures
+- noisy warnings that hide real errors
+
+Checks:
+
+```bash
+pnpm test:unit
+pnpm test:integration
+pnpm test:e2e
+```
+
+Actions:
+
+1. run smallest failing suite first
+2. validate schema/enum drift in touched routes
+3. fix warning debt when it blocks clear triage
+
+## 3) Extension Issues
+
+Symptoms:
+
+- extension cannot call API
+- auth sync appears broken
+
+Checks:
+
+```bash
+rg -n "WHATSAPP_EXTENSION_ORIGIN|LINKSHOT_EXTENSION_ORIGIN" server/index.ts
+```
+
+Actions:
+
+1. rebuild extension after auth/API changes
+2. verify extension origins are allowed by backend
+3. verify tokens are synced and sent in API calls
+
+## 4) Docs Deployment Issues
+
+Symptoms:
+
+- docs site shows stale or starter content
+- pages missing from navigation
+
+Checks:
 
 ```bash
 pnpm docs:check
+curl -sL https://docs.drdj.me | rg -n "DealDash Docs|Mint Starter Kit"
 ```
 
-## Quick health
+Actions:
 
-```bash
-pnpm check
-pnpm test:unit
-pnpm test:integration
-pnpm audit --audit-level=high
-```
+1. verify Mintlify source repo/path settings
+2. verify `docs.json` is committed to docs repo root
+3. confirm DNS CNAME: `docs -> cname.mintlify-dns.com`
+
+## 5) Security/Auth Regressions
+
+Symptoms:
+
+- unauthorized data visible
+- session checks bypassed unexpectedly
+
+Actions:
+
+1. stop deployment/merge until verified
+2. inspect auth/public/share route changes first
+3. run targeted auth integration/e2e tests
+4. document rollback path before retry
+
+## Escalation Rule
+
+If issue touches auth, sharing, external/public routes, or data integrity, escalate to manager agent review before merge.

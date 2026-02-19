@@ -1,21 +1,35 @@
 ---
 title: "Security Hardening"
-description: "Current security posture and hardening controls."
+description: "Security posture, high-risk areas, and operational hardening requirements."
 ---
 
-## Current status (2026-02-18)
+## Current Baseline
 
-- `pnpm audit --audit-level=high`: passed
-- `pnpm audit`: passed (no known vulnerabilities)
+- `pnpm audit --audit-level=high` must pass in CI
+- auth, sharing, and public endpoints are highest sensitivity
 
-## What was hardened
+## Critical Risk Areas
 
-1. Upgraded `pnpm` toolchain to patched versions.
-2. Patched transitive `tar` dependency chain.
-3. Removed unused vulnerable dev dependency path.
-4. Added audit checks in CI.
+- `/server/middleware/auth.ts`
+- `/server/routes/auth.ts`
+- `/server/routes/public.ts`
+- `/server/routes/shares.ts`
+- `/server/routes/external-shares.ts`
+- extension auth token sync logic
 
-## Keep enforced
+## Hardening Rules
 
-- Run `pnpm audit --audit-level=high` in CI.
-- Treat auth/public routes as high-risk change areas.
+- never commit credentials or API keys
+- validate and sanitize untrusted input
+- keep extension permissions least-privilege
+- enforce explicit authorization checks
+- add negative tests for unauthorized access
+
+## Incident Readiness
+
+For every high-risk merge, include:
+
+- potential failure mode
+- user/data impact
+- rollback command/path
+- owner for post-release monitoring

@@ -1,0 +1,33 @@
+---
+title: "Render Advisor Review"
+description: "Deployment configuration review for Render reliability and operability."
+---
+
+## Review Scope
+
+- reproducible builds
+- health check coverage
+- environment variable safety
+- runtime compatibility
+
+## Current Render Hardening
+
+`render.yaml` now includes:
+
+- frozen lockfile install in build command
+- explicit health check path: `/api/health`
+- generated secrets for JWT/session in Render
+
+## Checklist
+
+- build uses deterministic dependency install
+- app exposes reliable health endpoint
+- no secrets committed in repository
+- production origin and short-link domain configured correctly
+
+## Suggested Operational Verification
+
+1. deploy latest commit
+2. verify health endpoint in Render dashboard
+3. verify short-link redirects and auth-protected routes
+4. verify background jobs start without runtime errors

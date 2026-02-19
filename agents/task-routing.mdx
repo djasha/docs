@@ -5,14 +5,14 @@ description: "Ownership matrix for assigning tasks to manager or support agents.
 
 ## Routing Matrix
 
-| Task Type | Primary Owner | Minimum Checks | Docs Update |
-|---|---|---|---|
-| Auth/session bug | Manager + Support | `pnpm check`, integration, e2e | Security runbook |
-| New API endpoint | Support | `pnpm check`, integration | API surface docs |
-| UI feature | Support | `pnpm check`, unit/e2e as needed | Platform/repo-map when structure changes |
-| DB schema change | Manager | migration verification + integration | System overview/data model |
-| Extension change | Support | extension build + auth sync smoke | Extension page |
-| Security hardening | Manager | `pnpm audit`, targeted/full tests | Security runbook |
-| Docs-only change | Support | `pnpm docs:check` | changed page |
+| Task Type          | Primary Owner     | Minimum Checks                       | Docs Update                              |
+| ------------------ | ----------------- | ------------------------------------ | ---------------------------------------- |
+| Auth/session bug   | Manager + Support | `pnpm check`, integration, e2e       | Security runbook                         |
+| New API endpoint   | Support           | `pnpm check`, integration            | API surface docs                         |
+| UI feature         | Support           | `pnpm check`, unit/e2e as needed     | Platform/repo-map when structure changes |
+| DB schema change   | Manager           | migration verification + integration | System overview/data model               |
+| Extension change   | Support           | extension build + auth sync smoke    | Extension page                           |
+| Security hardening | Manager           | `pnpm audit`, targeted/full tests    | Security runbook                         |
+| Docs-only change   | Support           | `pnpm docs:check`                    | changed page                             |
 
 Use this table with `Internal > AI Change Protocol` before assigning work.

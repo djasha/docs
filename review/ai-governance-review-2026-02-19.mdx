@@ -1,0 +1,49 @@
+---
+title: "AI Governance Review (2026-02-19)"
+description: "Cross-system review of AI readiness, advisor findings, and governance status."
+---
+
+## Scope
+
+- repository health checks
+- Supabase advisor-oriented findings
+- Render deployment advisor-oriented findings
+- GitHub issue visibility
+
+## Results
+
+- `pnpm check`: pass
+- `pnpm docs:check`: pass
+- `pnpm format:check`: pass (after formatting sync)
+- open GitHub issues:
+  - `djasha/DealDash`: 0
+  - `djasha/docs`: 0
+
+## Workflow Findings
+
+- recent CI failures were traced to:
+  - transient npm audit endpoint 500s
+  - formatting check drift
+  - docs-sync token-gate behavior
+- remediations:
+  - retry-aware audit script
+  - formatting normalization
+  - docs-sync safe-skip when token is absent
+
+## Problems To Track
+
+- AI schema drift risk
+- high `any` density in backend critical paths
+- test warning noise
+
+## Remediation Applied
+
+- added Supabase advisor fix migration (`2026-02-19`)
+- hardened `render.yaml` build determinism + health checks
+- expanded categorized problem catalog + template
+
+## Next Iteration
+
+1. automate AI schema-to-runtime consistency checks
+2. reduce `any` in highest-risk route modules
+3. add weekly governance workflow reporting

@@ -1,0 +1,39 @@
+---
+title: "OpenClaw Integration Plan"
+description: "Phased integration model for OpenClaw manager/support agents in DealDash."
+---
+
+## Goal
+
+Enable OpenClaw-driven execution without compromising safety, reliability, or documentation quality.
+
+## Role Model
+
+- `Manager agent`: planning, routing, merge gating, risk ownership
+- `Support agent`: implementation, testing, docs updates, handoff
+
+## Phased Rollout
+
+1. Foundation
+   - standardize runbooks and docs contracts
+   - enforce required checks (`pnpm check`, tests, docs)
+2. Controlled execution
+   - manager-approved task routing only
+   - evidence-based handoff format required
+3. AI feature expansion
+   - template enhancement and analysis workflows through explicit API contracts
+   - audit trail for agent-originated writes
+4. Continuous governance
+   - weekly health review for code, CI, docs, security posture
+
+## Non-Negotiable Gates
+
+- no merge without docs updates for behavior changes
+- no merge on auth/public/share changes without tests
+- residual risk and rollback note required
+
+## Target Outcomes
+
+- faster safe delivery
+- fewer regressions in high-risk paths
+- consistent onboarding for new human and AI contributors

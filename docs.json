@@ -79,6 +79,9 @@
               "operations/security-hardening",
               "operations/troubleshooting",
               "operations/known-problems-catalog",
+              "operations/problem-entry-template",
+              "operations/supabase-advisor-review",
+              "operations/render-advisor-review",
               "operations/documentation-governance",
               "operations/custom-domain-docs-drdj-me",
               "operations/docs-repo-management"
@@ -96,7 +99,8 @@
               "internal/manager-support-model",
               "internal/change-protocol",
               "internal/docs-maintenance",
-              "internal/skill-blueprint"
+              "internal/skill-blueprint",
+              "internal/openclaw-integration-plan"
             ]
           }
         ]
@@ -120,7 +124,10 @@
         "groups": [
           {
             "group": "Audits",
-            "pages": ["review/codebase-review-2026-02-18"]
+            "pages": [
+              "review/codebase-review-2026-02-18",
+              "review/ai-governance-review-2026-02-19"
+            ]
           }
         ]
       }

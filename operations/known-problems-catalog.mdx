@@ -113,6 +113,22 @@ rg -n "WHATSAPP_EXTENSION_ORIGIN|LINKSHOT_EXTENSION_ORIGIN|cors" server/index.ts
   2. verify API calls include bearer token
   3. smoke test both extensions after auth changes
 
+### KD-009: NPM audit endpoint transient 500s (`P2`, Monitoring)
+
+- Symptoms: CI security-audit step fails with `ERR_PNPM_AUDIT_BAD_RESPONSE` despite no code change.
+- Impact: false-negative CI failures and blocked merges.
+- Root cause: transient npm audit API outages.
+- Detection:
+
+```bash
+bash scripts/security-audit-high.sh
+```
+
+- Fix:
+  1. run retry-aware audit script (`scripts/security-audit-high.sh`)
+  2. keep high-severity audit policy enabled when endpoint is reachable
+  3. monitor recurrence in weekly governance report
+
 ## Recently Resolved
 
 ### KD-007: Dependency vulnerability chain (`P0`, Resolved 2026-02-18)

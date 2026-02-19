@@ -1,0 +1,33 @@
+---
+title: "Supabase Advisor Review"
+description: "Advisor-oriented review checklist and current remediations for Supabase/Postgres health."
+---
+
+## Review Method
+
+- inspect migrations for RLS anti-patterns
+- inspect function hardening (`search_path`)
+- verify index strategy around common FK and auth lookups
+
+## Current Remediation State
+
+- prior advisor fixes exist in:
+  - `migrations/fix-advisors-2025-11-09.sql`
+  - `migrations/fix-supabase-advisors.sql`
+- current cycle patch:
+  - `migrations/fix-supabase-advisors-2026-02-19.sql`
+
+## What Was Fixed This Cycle
+
+- converted remaining `auth.uid()` policy patterns to `(SELECT auth.uid())` in newer migrations
+- set `search_path` hardening for `update_contact_notes_updated_at()`
+- optimized admin menu policies that still used row-by-row `auth.uid()` evaluation
+
+## Ongoing Checks
+
+```bash
+rg -n "auth\.uid\(\)" migrations
+rg -n "SET search_path" migrations
+```
+
+Use this page with the internal change protocol before any schema/policy modifications.

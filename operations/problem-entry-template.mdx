@@ -1,0 +1,41 @@
+---
+title: "Problem Entry Template"
+description: "Standard template for adding new categorized issues to the known-problems catalog."
+---
+
+Use this template for every new problem in `operations/known-problems-catalog`.
+
+## Template
+
+````md
+### KD-###: <short name> (`P0|P1|P2|P3`, `Active|Monitoring|Resolved`)
+
+- Symptoms:
+- Impact:
+- Root cause:
+- Detection:
+
+```bash
+# commands
+```
+````
+
+- Fix:
+  1. ...
+  2. ...
+
+- Verification:
+
+```bash
+# commands
+```
+
+```
+
+## Rules
+
+- Keep problem IDs stable; never reuse IDs.
+- Add concrete detection commands.
+- Add explicit verification commands.
+- If resolved, keep the entry in the `Resolved` section with resolution date.
+```

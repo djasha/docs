@@ -1,0 +1,43 @@
+---
+title: "Skill Stack Matrix"
+description: "Recommended skill combinations per DealDash task type with required validation gates."
+---
+
+Use this matrix to choose a minimal, high-signal skill set for each task.
+
+## Base Stack (default)
+
+1. `dealdash-agent-ops`
+2. `typescript-best-practices`
+3. `security-review`
+
+## Task Type → Skill Stack
+
+| Task Type | Recommended Skills (order) | Required Checks |
+| --- | --- | --- |
+| Web feature | `dealdash-agent-ops`, `typescript-best-practices`, `react-patterns`, `web-design-guidelines`, `javascript-testing-patterns` | `pnpm check`, `pnpm test:unit`, `pnpm docs:check` |
+| Backend/API | `dealdash-agent-ops`, `typescript-best-practices`, `nodejs-backend-patterns`, `security-review`, `javascript-testing-patterns` | `pnpm check`, `pnpm test:integration`, `pnpm docs:check` |
+| DB/RLS | `dealdash-agent-ops`, `drizzle-orm`, `supabase-postgres-best-practices`, `security-review` | `pnpm check`, `pnpm test:integration`, `pnpm docs:check` |
+| Extension | `dealdash-agent-ops`, `chrome-extension-development`, `typescript-best-practices`, `security-review` | `pnpm check`, extension build/smoke, `pnpm docs:check` |
+| Performance | `dealdash-agent-ops`, `performance`, `react-patterns` or `nodejs-backend-patterns` | `pnpm check`, targeted tests, `pnpm docs:check` |
+| Accessibility | `dealdash-agent-ops`, `accessibility`, `frontend-accessibility-best-practices`, `fixing-accessibility` | `pnpm check`, targeted tests, `pnpm docs:check` |
+| Deploy/infra | `dealdash-agent-ops`, `render-deploy`, `hostinger`, `security-review` | `pnpm check`, `pnpm docs:check`, post-deploy health checks |
+| CI failures | `dealdash-agent-ops`, `gh-fix-ci`, `javascript-testing-patterns` | reproduce locally + rerun failing checks |
+| Docs-only | `dealdash-agent-ops` (+ `hostinger` if DNS/domain) | `pnpm docs:check` |
+
+## High-Risk Escalation
+
+Require manager-review for changes in:
+
+- `/server/middleware/auth.ts`
+- `/server/routes/auth.ts`
+- `/server/routes/public.ts`
+- `/server/routes/shares.ts`
+- `/server/routes/external-shares.ts`
+- extension auth-sync scripts
+
+## Canonical Internal Version
+
+For the full markdown runbook version, see:
+
+- `/docs/agents/SKILL_STACK_MATRIX.md`

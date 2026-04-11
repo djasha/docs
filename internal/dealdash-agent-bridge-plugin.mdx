@@ -59,7 +59,9 @@ V1 intentionally does not expose admin/auth/team tools, runtime execution, files
 
 URL screenshot capture accepts only `http` and `https` URLs and blocks local/private targets by default. Use `DEALDASH_AGENT_ALLOW_PRIVATE_CAPTURE_URLS=true` only for trusted development capture.
 
-Photo uploads accept png, jpeg, and webp data and enforce `DEALDASH_AGENT_MAX_IMAGE_BYTES` before upload.
+Photo uploads accept PNG, JPEG/JPG, WebP, GIF, AVIF, and BMP raster images by default. The MCP bridge enforces `DEALDASH_AGENT_MAX_IMAGE_BYTES` before sending the payload to DealDash. The current default binary image limit is 25MB; the DealDash API JSON body limit has 50MB headroom for base64 encoding. Raise those limits only in controlled deployments because base64 uploads are memory-heavy.
+
+SVG, HEIC, and TIFF are not accepted by default. SVG can contain active content, and HEIC/TIFF are not reliably previewable in browser-based DealDash screenshot galleries. Messaging adapters should convert those formats to PNG/JPEG/WebP before calling `screenshots.upload_photo`.
 
 ## LinkShot View Logs
 

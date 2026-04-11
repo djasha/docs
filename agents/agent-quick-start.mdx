@@ -53,7 +53,10 @@ First actions:
    - latest screenshots
    - LinkShot View Logs
    - LinkShot To-Do / due views
-5. If something fails, explain the error in plain language and give me one next step.
+5. When I explicitly ask for it:
+   - shorten a URL with the short link tool
+   - upload an image with the screenshot tool and return the short link
+6. If something fails, explain the error in plain language and give me one next step.
 
 Success:
 Show what connected, what DealDash data you can read, and what still needs approval.
@@ -77,8 +80,18 @@ That public repo contains instructions and placeholder examples only. It does no
 - "Which posts still need views checked?"
 - "Summarize screenshots shared with me."
 - "Find the deal for this promo code."
+- "Shorten this link for me: https://example.com"
+- "Upload this image to LinkShot and give me the short link."
 
-These are read-only checks. They help you confirm the connection before changing anything.
+The first five are read-only checks. They help you confirm the connection before changing anything.
+
+Shortening a link or uploading a screenshot creates a new DealDash record. Ask the agent to explain it first if you want to stay read-only.
+
+## Image Uploads
+
+DealDash accepts common web images: PNG, JPG/JPEG, WebP, GIF, AVIF, and BMP up to 25MB by default.
+
+If an image from WhatsApp, Telegram, Slack, Mattermost, OpenClaw, Hermes, Codex, or Claude fails, ask the agent to convert it to PNG, JPG, or WebP and try again. SVG, HEIC, and TIFF are intentionally not accepted by default because they can be unsafe or unreliable in browser previews.
 
 ## Common Problems
 

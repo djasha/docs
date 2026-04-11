@@ -92,6 +92,8 @@ Supported filters:
 
 Rows include checked date, total views, parsed per-platform values, missing platform labels, source URL, deal/promo context, owner/sharer context, and screenshot evidence. Screenshot previews are returned only when the current user owns the screenshot or has an explicit screenshot share; otherwise the row reports a redacted attachment reference.
 
+Screenshot upload endpoints accept base64 raster images as PNG, JPEG/JPG, WebP, GIF, AVIF, or BMP. The default binary image limit is 25MB, with a 50MB JSON body limit for base64 request headroom. `SCREENSHOT_MAX_IMAGE_BYTES`, `DEALDASH_AGENT_MAX_IMAGE_BYTES`, and `API_JSON_BODY_LIMIT` can raise or lower limits per deployment. SVG, HEIC, and TIFF should be converted by clients or messaging adapters before upload.
+
 ### Agent Bridge
 
 `/api/agent/deals/view-logs` exposes the same read-only data as a Tier 0

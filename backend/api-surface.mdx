@@ -15,6 +15,8 @@ This is a planning map, not a strict OpenAPI replacement.
 - `/server/routes/public.ts`
 - `/server/routes/screenshots.ts`
 - `/server/routes/shortener.ts`
+- `/server/routes/agent.ts`
+- `/server/routes/settings.ts`
 - `/server/routes/ai-schema.ts`
 
 ## Mounted Families
@@ -27,7 +29,87 @@ This is a planning map, not a strict OpenAPI replacement.
 - `GET /api/public/*` (public-facing)
 - `GET/POST /api/screenshots/*` (auth protected)
 - `GET/POST /api/shorten/*` and `GET /r/*`
+- `GET/POST/... /api/agent/*` (provider-neutral MCP bridge)
+- `GET/PUT /api/settings` and `GET /api/settings/agent-connection`
 - `GET /api/ai/schema|entities|actions`
+
+## Agent Bridge Contract
+
+`/api/agent/*` is the canonical backend surface for MCP-capable agents. It is shared by Claude Code, OpenAI/Codex or ChatGPT MCP clients, OpenClaw adapters, and future agent hosts.
+
+- `GET /api/agent/schema` returns the tool-family schema and approval tiers.
+- Agent calls authenticate with `Authorization: Bearer <DEALDASH_AGENT_SERVICE_SECRET>`.
+- Acting-user headers are required: `x-dd-acting-user-id`, `x-dd-channel`, `x-dd-actor-id`, and `x-dd-request-id`.
+- Sensitive writes require `x-dd-approval-id`.
+- Approval confirmation is restricted to trusted adapters with `x-dd-approval-confirm-secret`.
+- OpenClaw policy belongs in channel adapters; the backend remains provider-neutral.
+
+Allowlisted V1 families are short links, screenshots, deals, payments, tasks, contacts, influencers, activity, suggestions, and approvals. Admin/auth/team, runtime/filesystem, and bulk destructive tools are excluded.
+
+## LinkShot Data Visibility
+
+The authenticated `/screenshots` page uses the existing LinkShot data-writing
+contract and adds read-only review surfaces for screenshots, due view checks,
+and view logs.
+
+### Screenshots
+
+`GET /api/screenshots` defaults to owned-only records.
+
+Optional query:
+
+- `scope=mine-and-shared`: include screenshots owned by the signed-in user plus screenshots shared through active team membership.
+
+Shared screenshot rows include ownership context such as owner, sharer, team, and shared date when available. Existing screenshot mutation rules still apply:
+owned screenshots can use the current link/share/delete flows, while team-shared rows are read-only unless the current user owns the screenshot.
+
+### Due Views
+
+`GET /api/deals/due-views` keeps its default extension-compatible response.
+
+Optional query:
+
+- `scope=mine-and-shared`: include owned deal videos plus authorized team-shared deal records.
+- `includeLogs=true`: attach recent parsed LinkShot view-log context.
+- `includeScreenshots=true`: attach authorized screenshot references and counts.
+
+Team-shared deal logs only appear when the deal is shared through team entity sharing with deal sharing enabled.
+
+### View Logs
+
+`GET /api/deals/view-logs` is a read-only endpoint for LinkShot view checks.
+
+Supported filters:
+
+- `scope`
+- `dealId`
+- `videoId`
+- `from`
+- `to`
+- `q`
+- `limit`
+- `offset`
+
+Rows include checked date, total views, parsed per-platform values, missing platform labels, source URL, deal/promo context, owner/sharer context, and screenshot evidence. Screenshot previews are returned only when the current user owns the screenshot or has an explicit screenshot share; otherwise the row reports a redacted attachment reference.
+
+### Agent Bridge
+
+`/api/agent/deals/view-logs` exposes the same read-only data as a Tier 0
+`deals.view_logs` operation for MCP-capable agents. Agent calls must still use
+service-secret authentication plus acting-user headers, and the backend applies
+the same user/team visibility rules as the website.
+
+See [LinkShot Extension](../extensions/linkshot-extension.mdx) for the website
+quick view and [DealDash Agent Bridge Plugin](../internal/dealdash-agent-bridge-plugin.mdx)
+for MCP usage.
+
+## Agent Connection Settings
+
+`GET /api/settings/agent-connection` is an authenticated, read-only Settings endpoint for Bring Your Own Agent setup. It returns safe MCP status, setup instructions, permission tiers, tool groups, future AI feature slots, and recent `agent_tool_call` logs scoped to the current user.
+
+The safe setup payload includes a human guide URL, the public DealDash Agent Kit repo URL, an agent-optimized docs URL, the MCP command/config path, and the official MCP SDK URL. Public and browser-visible responses expose names and links only, never secret values.
+
+The endpoint returns env names and boolean configuration flags only. It must not expose service secret values, approval confirmation secret values, raw request payloads, image data, payment payloads, or cross-account logs.
 
 ## Validation Rule
 

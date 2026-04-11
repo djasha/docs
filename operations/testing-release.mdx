@@ -19,6 +19,10 @@ pnpm test:e2e
 pnpm audit --audit-level=high
 ```
 
+Playwright starts the local app with `DISABLE_BACKGROUND_JOBS=true` so browser
+tests do not run Sheets sync queues, two-way Sheets imports, reminder checks, or
+recurring task checks against shared credentials.
+
 ## Release Checklist
 
 1. pull latest `main`

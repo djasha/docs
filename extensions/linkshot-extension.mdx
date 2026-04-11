@@ -10,12 +10,50 @@ Implementation root: `/linkshot-extension`.
 - capture and annotate screenshots
 - optional OCR/offscreen processing
 - create and manage shareable links through backend APIs
+- write view-check data through the existing DealDash APIs used by the website
+
+## Website Quick View
+
+DealDash surfaces LinkShot data inside the authenticated `/screenshots` page.
+The extension keeps writing through its existing APIs; the website organizes
+that data for review.
+
+The page has three tabs:
+
+- `Gallery`: screenshots owned by the signed-in user plus team-shared screenshots they can access.
+- `LinkShot To-Do`: extension-style view-check cards grouped by `Overdue`, `Due today`, `Upcoming`, and `Completed`.
+- `View Logs`: read-only audit rows with checked dates, total views, parsed per-platform views, source URLs, screenshot previews, and ownership context.
+
+Ownership labels mean:
+
+- `Owned`: the signed-in user owns the screenshot or deal record and can use the existing link, share, and delete actions.
+- `Team shared`: the record is visible through team sharing and is read-only unless the user owns the underlying screenshot.
+
+Screenshots referenced by a shared deal log only show previews when the user
+owns the screenshot or the screenshot was explicitly shared with them. Otherwise
+the website shows a redacted attachment count.
+
+## Data Contract
+
+The website quick view reads data from:
+
+- `/api/screenshots?scope=mine-and-shared`
+- `/api/deals/due-views?scope=mine-and-shared&includeLogs=true&includeScreenshots=true`
+- `/api/deals/view-logs`
+
+Default API behavior remains backward compatible with the Chrome extension.
+Do not add website-only assumptions to the extension payloads.
+
+For endpoint details, see [API Surface](../backend/api-surface.mdx).
+For MCP/agent access, see [DealDash Agent Bridge Plugin](../internal/dealdash-agent-bridge-plugin.mdx).
 
 ## High-Risk Areas
 
 - offscreen/document permissions
 - clipboard/file handling security
 - auth synchronization with DealDash backend
+- shared screenshot and shared deal visibility boundaries
+- keeping extension defaults backward compatible
 
 ## Change Workflow
 
@@ -25,9 +63,15 @@ pnpm install
 pnpm build
 ```
 
+Website-only LinkShot visibility work belongs in the main DealDash app, not in
+`/linkshot-extension`, unless the extension data-writing contract itself needs
+to change.
+
 ## Validation
 
 - screenshot capture works on supported pages
 - OCR behavior is deterministic and does not leak data
 - generated links resolve correctly through `/r/*`
 - permission scope is justified and reviewed
+- `/screenshots` tabs show owned and authorized team-shared records only
+- view logs are read-only and redact unauthorized screenshot attachments

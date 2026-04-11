@@ -17,6 +17,16 @@ description: "Deployment configuration review for Render reliability and operabi
 - frozen lockfile install in build command
 - explicit health check path: `/api/health`
 - generated secrets for JWT/session in Render
+- secret-backed DealDash Agent Bridge env slots:
+  - `DEALDASH_AGENT_SERVICE_SECRET`
+  - `DEALDASH_AGENT_APPROVAL_CONFIRM_SECRET`
+
+## Deployment Ownership Clarification
+
+- canonical production app runtime: Render
+- canonical production data/auth: Supabase
+- OpenClaw control plane: Hostinger VPS node
+- no active Vercel deployment artifacts are maintained in this repo
 
 ## Checklist
 
@@ -24,6 +34,7 @@ description: "Deployment configuration review for Render reliability and operabi
 - app exposes reliable health endpoint
 - no secrets committed in repository
 - production origin and short-link domain configured correctly
+- deployment docs clearly identify Render/Supabase as canonical production path
 
 ## Suggested Operational Verification
 

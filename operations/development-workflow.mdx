@@ -7,6 +7,7 @@ description: "Daily engineering workflow and merge gates for DealDash contributo
 
 ```bash
 pnpm dev:full
+DISABLE_BACKGROUND_JOBS=true pnpm dev:full
 pnpm check
 pnpm test:unit
 pnpm test:integration
@@ -14,6 +15,11 @@ pnpm docs:check
 ```
 
 Add `pnpm test:e2e` for auth/public/UI-routing changes.
+
+Use `DISABLE_BACKGROUND_JOBS=true` for local UI smoke tests against shared or
+production-like credentials so the backend does not process Sheets sync queues,
+two-way Sheets imports, reminders, or recurring task checks during validation.
+Production Render does not set this flag.
 
 ## Required Merge Gates
 

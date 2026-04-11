@@ -1,0 +1,73 @@
+---
+title: "OpenClaw Readiness Checklist"
+description: "Release gate checklist for enabling OpenClaw agents in DealDash safely."
+---
+
+Use this checklist before enabling new OpenClaw capabilities or expanding autonomy.
+
+## Gate A: Documentation
+
+1. Integration plan is current: `internal/openclaw-integration-plan`
+2. Manager/support model is current: `internal/manager-support-model`
+3. Change protocol includes rollback path: `internal/change-protocol`
+4. Skill stack matrix is current: `internal/skill-stack-matrix`
+5. Known problems catalog is current: `operations/known-problems-catalog`
+
+## Gate B: Safety Controls
+
+1. Agent writes are limited to approved paths by policy
+2. Destructive operations require explicit human approval
+3. Every agent mutation has audit logs with actor and timestamp
+4. Rollback instructions are documented and tested
+5. Secrets are stored in Keychain/secret manager, not plaintext files
+
+## Gate C: Platform Health
+
+1. `pnpm check` passes
+2. `pnpm format:check` passes
+3. `pnpm test:unit` passes
+4. `pnpm test:integration` passes
+5. `pnpm docs:check` passes
+6. `pnpm openclaw:check` passes
+7. Render `/api/health` is healthy on active domains
+
+## Gate D: Routing and Responsibility
+
+1. Manager and support routing matrix is current
+2. Escalation paths are explicit for auth/data integrity/security incidents
+3. SLA and ownership for incident response are defined
+
+## Gate E: Channel and Node Policy
+
+1. WhatsApp external + Telegram internal split is documented
+2. External communications use neutral role language
+3. Dedicated VPS node is primary and MacBook node is fallback
+4. Runtime execution is denied by default
+5. One-off exec requires explicit manager confirmation
+
+## Gate F: SEO and Public Surface
+
+1. Canonical host points to active app domain
+2. `robots.txt`, `sitemap.xml`, and `llms.txt` align with real public routes
+3. Private/authenticated routes are not indexable
+
+## Gate G: Learning Loop
+
+1. Learning-loop policy doc is current
+2. Interaction log file exists and uses structured events
+3. `pnpm openclaw:learn` successfully updates operating profile
+4. Any promotion to autonomous behavior has manager signoff
+
+## CI Enforcement
+
+This repository enforces a machine-readable readiness baseline:
+
+- script: `scripts/check-openclaw-readiness.mjs`
+- command: `pnpm openclaw:check`
+- CI step: `OpenClaw readiness check` in `.github/workflows/ci.yml`
+
+## Rollout Policy
+
+1. Start with supervised mode (advisory + PR generation)
+2. Enable narrow write scopes after one stable week
+3. Expand capabilities only with zero unresolved P1/P2 safety findings

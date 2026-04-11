@@ -1,0 +1,78 @@
+---
+title: "Connect An AI Agent"
+description: "A simple setup guide for connecting an AI agent to DealDash safely."
+---
+
+This page is for non-technical users.
+
+Use it when you want Codex, ChatGPT, Claude, OpenClaw, or another AI agent to help with DealDash screenshots, LinkShot view logs, deals, links, or summaries.
+
+## Fast Setup
+
+1. Open DealDash.
+2. Go to **Tools** -> **AI Agent Setup**.
+3. Click **Copy prompt**.
+4. Paste the prompt into your AI app.
+5. Let the agent guide you through the connection.
+6. Start with read-only questions, then approve changes only when you are sure.
+
+## Ready Prompt
+
+Copy the prompt from the DealDash dashboard so the links stay current.
+
+```text
+I want you to connect to DealDash safely.
+
+Use this simple guide first:
+https://docs.drdj.me/agents/agent-quick-start
+
+Use the public DealDash Agent Kit if you need setup files or agent instructions:
+https://github.com/djasha/dealdash-agent-kit
+
+Use the agent-optimized reference only when you need exact tool names:
+https://docs.drdj.me/internal/dealdash-agent-bridge-plugin
+
+Please start in read-only mode. Help me connect the DealDash Agent Bridge, then show me my latest screenshots and LinkShot view logs. Do not ask for my DealDash password. Do not print or store secrets. If an Agent key is needed, ask me to enter it only in your secure MCP/environment setup, not in normal chat. Wait for my approval before any write action.
+```
+
+## Good First Questions
+
+- "Show my latest screenshots."
+- "Show my LinkShot View Logs for this week."
+- "Which posts still need views checked?"
+- "Summarize screenshots shared with me."
+- "Find the deal for this promo code."
+
+These are read-only. They help you confirm the connection before changing anything.
+
+## What Needs Approval
+
+Ask the agent to explain the change before approving any of these:
+
+- creating or changing deals
+- creating, changing, or deleting payments
+- deleting screenshots or links
+- changing team sharing or visibility
+
+## Sign-In And Keys
+
+Do not paste your DealDash password into an AI chat.
+
+If the agent asks for access, use a safe path:
+
+- Sign in through the AI app's official DealDash connection flow, if available.
+- Put the Agent key only into the AI app's secure MCP or environment settings.
+- Ask your DealDash admin for help if you do not know where the Agent key belongs.
+
+DealDash shows whether the connection is ready. It does not show secret values.
+
+## For Agents And Developers
+
+These pages are tagged for agents that need exact names, routes, and tool contracts:
+
+- [Agent-optimized bridge reference](../internal/dealdash-agent-bridge-plugin.mdx)
+- [API surface](../backend/api-surface.mdx)
+- [Task routing](task-routing.mdx)
+- [Public DealDash Agent Kit](https://github.com/djasha/dealdash-agent-kit)
+
+Start read-only. Let the agent look first. Approve changes only after the agent explains what it will change and why.

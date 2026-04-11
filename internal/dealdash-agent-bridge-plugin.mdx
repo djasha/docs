@@ -1,0 +1,80 @@
+---
+title: "DealDash Agent Bridge Plugin"
+description: "Provider-neutral MCP bridge for safe DealDash agent actions."
+---
+
+`dealdash-agent-bridge` is the repo-local plugin that gives MCP-capable agents a safe DealDash tool surface. It is designed for Claude Code, OpenAI/Codex or ChatGPT MCP clients, OpenClaw, and future agent hosts.
+
+OpenClaw is treated as an optional WhatsApp and Telegram adapter, not as the core identity of the system.
+
+Human operators should start with [Connect An AI Agent](../agents/agent-quick-start.mdx) or the in-app `/tools/ai-agent-setup` page. This page is the agent-optimized reference for exact tool names, auth headers, and safety rules.
+
+## Architecture
+
+1. DealDash agent core: canonical `/api/agent/*` backend contract with acting-user scoped access.
+2. MCP server: provider-neutral stdio server in `/plugins/dealdash-agent-bridge/scripts/server.ts`.
+3. Channel adapters: optional messaging integrations that normalize attachments, capture approvals, and apply channel tone.
+
+## Backend Auth
+
+Agent calls require gateway-delegated authentication.
+
+- `Authorization: Bearer <DEALDASH_AGENT_SERVICE_SECRET>`
+- `x-dd-acting-user-id`
+- `x-dd-channel`
+- `x-dd-actor-id`
+- `x-dd-request-id`
+- `x-dd-approval-id` for sensitive writes
+
+The backend enforces acting-user scope before any proxied app route runs.
+
+Operators can verify the safe bring-your-own-agent surface inside DealDash at `/settings` -> **AI Agent Connection**. The Settings card shows connection status, `.mcp.json` path, MCP command, required env/header names, acting-user ID, permission tiers, tool families, and recent scoped logs without exposing secret values.
+
+The public DealDash Agent Kit repository is [djasha/dealdash-agent-kit](https://github.com/djasha/dealdash-agent-kit). It contains sanitized Markdown instructions, skill files, and MCP setup notes for agents. It must never contain real secrets, user data, production tokens, database URLs, or private local paths.
+
+The official MCP TypeScript SDK repository is [modelcontextprotocol/typescript-sdk](https://github.com/modelcontextprotocol/typescript-sdk).
+
+## Tool Families
+
+- Short links: create from URL, list, stats, delete
+- Screenshots: upload photo, capture URL, reserve, link to deal, get, latest, delete
+- Deals: search, get, latest, create, update, find by URL, due views, view logs, progress
+- Payments: list, create, update, delete
+- Tasks: list, latest, create, complete, reopen
+- Contacts: search, get, latest, upsert, by phone, deals, notes, labels, counts, duplicates
+- Influencers: search, get, latest, upsert, by phone, by promo code, stats, last progress
+- Activity: feed and analytics
+- Suggestions: pipeline summary, next actions, payment followups, content followups
+- Approvals: request and status
+
+## Approval Tiers
+
+- Tier 0: reads only
+- Tier 1: low-risk writes such as short-link creation, screenshot upload, screenshot linking, task state changes, and note creation
+- Tier 2: sensitive writes such as deal create/update/delete, payment CRUD, contact deletes, screenshot deletes, and visibility changes
+
+Tier 2 calls require an approved `x-dd-approval-id`. For OpenClaw messaging flows, Telegram approval evidence should be captured by the adapter before confirming the approval record. Confirmation is not exposed as a generic MCP tool and requires `DEALDASH_AGENT_APPROVAL_CONFIRM_SECRET` plus `x-dd-approval-confirm-secret`.
+
+## V1 Exclusions
+
+V1 intentionally does not expose admin/auth/team tools, runtime execution, filesystem tools, or bulk destructive operations.
+
+URL screenshot capture accepts only `http` and `https` URLs and blocks local/private targets by default. Use `DEALDASH_AGENT_ALLOW_PRIVATE_CAPTURE_URLS=true` only for trusted development capture.
+
+Photo uploads accept png, jpeg, and webp data and enforce `DEALDASH_AGENT_MAX_IMAGE_BYTES` before upload.
+
+## LinkShot View Logs
+
+`deals.view_logs` is a Tier 0 read operation routed through
+`/api/agent/deals/view-logs`. It mirrors the website's `/screenshots` View Logs
+tab and supports `scope`, `dealId`, `videoId`, `from`, `to`, `q`, `limit`, and
+`offset` filters.
+
+The bridge applies the same acting-user boundaries as the DealDash website:
+owned records are visible by user ID, team-shared deal logs require active team
+membership and deal sharing, and screenshot previews are included only when the
+acting user owns or can explicitly view the screenshot.
+
+## Related Settings Page
+
+See [AI Agent Connection Settings](dealdash-agent-connection-settings.mdx) for the in-app BYOA endpoint, Settings UI, security rules, and test map.

@@ -1,0 +1,72 @@
+---
+title: "AI Agent Connection Settings"
+description: "Settings page plan and endpoint map for Bring Your Own Agent MCP connections."
+---
+
+## Goal
+
+DealDash exposes an authenticated **AI Agent Connection** section in `/settings` and an **AI Agent Setup** entry in `/tools` so operators can connect Claude Code, OpenAI/Codex, ChatGPT MCP clients, OpenClaw, or another MCP-capable host without exposing backend secrets in the browser.
+
+This Settings surface is informational and diagnostic in v1. It does not mint service secrets, bypass approvals, or expose manager confirmation secrets.
+
+Non-technical users should start with [Connect An AI Agent](../agents/agent-quick-start.mdx). This page remains the agent/developer reference for exact response fields and safety rules.
+
+## Settings Endpoint
+
+| Method | Endpoint                         | Auth          | Purpose                                                                                                                                        |
+| ------ | -------------------------------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GET`  | `/api/settings/agent-connection` | `requireAuth` | Returns safe connection status, MCP instructions, permission tiers, tool families, future AI feature slots, and recent user-scoped agent logs. |
+
+The endpoint returns env names and boolean configuration flags only. It never returns secret values.
+
+## Response Sections
+
+- `schemaVersion`: current DealDash Agent Bridge schema version.
+- `actingUserId`: current authenticated user ID for MCP acting-user context.
+- `status`: MCP secret configured, approval confirmation configured, state, recent count, and last activity.
+- `mcp`: server name, bridge path, config path, command, backend base URL, simple docs URL, agent-optimized docs URL, public DealDash Agent Kit GitHub repo, and MCP TypeScript SDK GitHub repo.
+- `auth`: required env names, optional env names, required headers, and optional headers.
+- `permissions`: Tier 0, Tier 1, and Tier 2 summaries.
+- `toolGroups`: canonical provider-neutral tool families from the shared schema.
+- `workflows`: common link, screenshot, contact, and suggestion workflows.
+- `futureFeatures`: planned analysis, summaries, approval inbox, and adapter diagnostics.
+- `recentLogs`: sanitized `agent_tool_call` activity scoped to the current user.
+
+## UI Map
+
+The Tools hub includes:
+
+- `/tools` card: `AI Agent Setup`, simple setup badge, and docs link.
+- `/tools/ai-agent-setup`: copyable ready prompt, simple steps, safety notes, and the same safe connection card used in Settings.
+
+The connection card contains:
+
+- Header and refresh action.
+- Connection status, permission gate, and recent activity cards.
+- MCP connection instructions with repo-local `.mcp.json` and server command.
+- Required env/header names and current acting-user ID.
+- Tier 0/Tier 1/Tier 2 permission explanation.
+- Tool family summary.
+- Recent user-scoped agent logs.
+- Future AI feature slots for analysis and summaries.
+- Links to the simple human guide, public DealDash Agent Kit, agent-optimized bridge reference, API docs, and MCP SDK GitHub repo.
+
+## Security Rules
+
+- Do not show or set `DEALDASH_AGENT_SERVICE_SECRET` from the browser.
+- Do not show or set `DEALDASH_AGENT_APPROVAL_CONFIRM_SECRET` from the browser.
+- Public docs and the public agent kit must use placeholders only and must not include real tokens, database URLs, user data, or private local paths.
+- Scope logs by `req.user.userId`.
+- Sanitize logs to safe metadata only.
+- Clamp log limits to 1-50 rows.
+- Keep Tier 2 writes approval-gated for every host client.
+- Treat OpenClaw as an optional WhatsApp/Telegram adapter on top of the provider-neutral MCP bridge.
+
+## Related Docs
+
+- [Connect An AI Agent](../agents/agent-quick-start.mdx)
+- [DealDash Agent Bridge Plugin](dealdash-agent-bridge-plugin.mdx)
+- [Change Safety Protocol](change-protocol.mdx)
+- [API Surface](../backend/api-surface.mdx)
+- [Public DealDash Agent Kit](https://github.com/djasha/dealdash-agent-kit)
+- [MCP TypeScript SDK GitHub](https://github.com/modelcontextprotocol/typescript-sdk)

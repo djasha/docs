@@ -1,17 +1,17 @@
 # Mintlify Docs Source
 
-This folder contains the DealDash documentation content intended for `https://djasha.mintlify.app/`.
+This folder contains the DealDash documentation content intended for `https://docs.drdj.me/`.
 
 ## Current state
 
-The live site is still on Mintlify starter content.
+The live site is served from the synced Mintlify docs repository. Changes here publish after they are pushed to `main` and `.github/workflows/docs-sync.yml` syncs this folder to `djasha/docs`.
 
-## Replace with this content
+## Publish this content
 
-1. Open Mintlify docs project for `djasha.mintlify.app`.
-2. Replace existing docs source with this folder's files.
-3. Ensure `docs.json` from this folder is the active config.
-4. Publish and verify navigation tabs/pages.
+1. Merge changes to `main`.
+2. Confirm `DOCS_REPO_PAT` is configured for the docs sync workflow.
+3. Let `.github/workflows/docs-sync.yml` push `mintlify-docs/` into `djasha/docs`.
+4. Verify navigation tabs/pages at `https://docs.drdj.me/`.
 
 ## Validate links locally (repo side)
 

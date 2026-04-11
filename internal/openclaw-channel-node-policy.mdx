@@ -1,0 +1,72 @@
+---
+title: "OpenClaw Channel and Node Policy"
+description: "Locked channel-routing, privacy, topology, and execution policy for DealDash OpenClaw operations."
+---
+
+## Locked Communication Model
+
+- WhatsApp: external influencer/client communication (formal only)
+- Telegram: internal manager channel (approvals, operations, reporting)
+
+## Privacy Rule
+
+- External communication must use neutral role language.
+- Internal personal relationship context must not be exposed in external messages.
+
+## Node Topology
+
+- Primary node: Hostinger VPS (`dealdash-prod-gateway`)
+- Fallback node: MacBook gateway
+- No active-active write mode across both nodes
+
+## Exec Control
+
+- Runtime execution is denied by default.
+- One-off exec requires explicit manager confirmation on Telegram.
+- After completion, runtime access is disabled again.
+
+## OpenClaw Config Baseline
+
+Official references:
+
+- [Telegram](https://docs.openclaw.ai/telegram)
+- [Groups](https://docs.openclaw.ai/groups)
+- [Tools](https://docs.openclaw.ai/tools)
+
+Example:
+
+```json
+{
+  "node_id": "dealdash-prod-gateway",
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "dmPolicy": "allowlist",
+      "allowFrom": ["telegram:123456789"],
+      "groupPolicy": "allowlist",
+      "groups": { "*": { "requireMention": true } }
+    },
+    "whatsapp": {
+      "enabled": true,
+      "dmPolicy": "pairing",
+      "groupPolicy": "allowlist",
+      "groups": { "*": { "requireMention": true } }
+    }
+  },
+  "agents": {
+    "list": [
+      {
+        "id": "manager",
+        "tools": { "profile": "coding", "deny": ["group:runtime"] }
+      },
+      {
+        "id": "support",
+        "tools": {
+          "profile": "messaging",
+          "deny": ["group:runtime", "group:fs"]
+        }
+      }
+    ]
+  }
+}
+```

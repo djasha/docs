@@ -5,16 +5,20 @@ description: "Technical and operational documentation for DealDash platform, API
 
 DealDash docs are written to support two audiences at the same time:
 
+- non-technical users connecting AI agents safely
 - developers building features and fixing production issues
 - AI agents executing scoped tasks safely with test and docs gates
 
 ## Start Here
 
 1. `Getting Started > Quickstart`
-2. `Getting Started > Agent Onboarding`
-3. `Platform > System`
-4. `Operations > Runbooks`
-5. `Internal > Engineering Handbook`
+2. `Agent Ops > Connect An AI Agent`
+3. `Getting Started > Agent Onboarding`
+4. `Platform > System`
+5. `Operations > Runbooks`
+6. `Internal > Engineering Handbook`
+7. `Internal > DealDash Agent Bridge Plugin`
+8. `Internal > AI Agent Connection Settings`
 
 ## What This Site Covers
 
@@ -23,14 +27,19 @@ DealDash docs are written to support two audiences at the same time:
 - Chrome extension workflows (WhatsApp + LinkShot)
 - release, security, and troubleshooting runbooks
 - manager/support agent operating model
+- provider-neutral MCP agent bridge for DealDash tools, screenshots, links, approvals, and messaging adapters
+- in-app Bring Your Own Agent settings, permission tiers, connection status, and scoped agent logs
 
 ## Reliability Baseline
 
-Latest verified baseline (February 2026):
+Latest verified baseline (April 10, 2026):
 
 - typecheck passing
-- unit/integration/e2e suites passing
+- unit suite passing (`117/117`)
+- integration suite passing (`138/138`)
 - docs link validation passing
-- high-severity dependency audit passing
+- dependency audit passing with no known vulnerabilities
+- OpenClaw readiness checks passing
+- Agent Bridge MCP stdio startup and tool listing verified
 
 Use the `Review` section for dated audit snapshots and risk notes.

@@ -1,0 +1,100 @@
+---
+title: "SEO and AI Search Optimization"
+description: "Canonical SEO baseline for DealDash web pages, crawler controls, and AI-discoverable content."
+---
+
+This runbook defines the baseline that keeps DealDash discoverable in classic search and AI-assisted search while preventing private app routes from indexing.
+
+## Scope
+
+Managed files:
+
+- `/client/index.html`
+- `/client/public/robots.txt`
+- `/client/public/sitemap.xml`
+- `/client/public/llms.txt`
+- `/client/src/components/SeoManager.tsx`
+
+## What We Optimize
+
+1. Route-aware metadata for public pages
+2. Canonical URLs and Open Graph/Twitter tags
+3. Crawl boundaries for private/authenticated pages
+4. Machine-readable site map (`sitemap.xml`)
+5. AI-crawler context (`llms.txt`)
+
+## Public Indexable Routes
+
+- `/welcome`
+- `/features`
+- `/pricing`
+- `/about`
+- `/contact`
+- `/terms`
+- `/privacy`
+- `/cookies`
+
+Everything else defaults to `noindex, nofollow` via `SeoManager`.
+
+## Why `SeoManager` Exists
+
+DealDash is an SPA. Static head tags alone are not enough for route-level quality signals. `SeoManager` updates title, description, robots, Open Graph, Twitter, and canonical tags by route.
+
+Location:
+
+- `/client/src/components/SeoManager.tsx`
+
+## Crawl Policy
+
+`robots.txt` allows public marketing pages and blocks private app surfaces:
+
+- `/api/*`
+- authenticated product routes (`/dashboard`, `/deals`, `/contacts`, etc.)
+- auth pages (`/login`, `/auth/*`)
+- share viewer route (`/s/*`)
+
+Location:
+
+- `/client/public/robots.txt`
+
+## AI Search Baseline
+
+`llms.txt` publishes concise product context and approved public URLs for AI systems.
+
+Location:
+
+- `/client/public/llms.txt`
+
+Policy:
+
+1. Keep claims factual and non-promotional.
+2. Link only public, stable routes.
+3. Do not include internal endpoints or private route examples.
+
+## Verification Checklist
+
+```bash
+pnpm check
+```
+
+Manual probes:
+
+```bash
+curl -I https://dealdash.neonoir.ai/robots.txt
+curl -I https://dealdash.neonoir.ai/sitemap.xml
+curl -I https://dealdash.neonoir.ai/llms.txt
+```
+
+Browser check:
+
+1. Open each public marketing page.
+2. Inspect `<title>`, canonical, and robots tags in DevTools.
+3. Confirm private routes resolve to `noindex, nofollow`.
+
+## Update Rule
+
+If a public marketing route is added/removed, update all three:
+
+1. `/client/src/components/SeoManager.tsx`
+2. `/client/public/sitemap.xml`
+3. `/client/public/llms.txt`

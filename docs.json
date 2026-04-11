@@ -77,6 +77,7 @@
               "operations/development-workflow",
               "operations/testing-release",
               "operations/security-hardening",
+              "operations/seo-ai-search-optimization",
               "operations/troubleshooting",
               "operations/known-problems-catalog",
               "operations/problem-entry-template",
@@ -101,6 +102,12 @@
               "internal/docs-maintenance",
               "internal/skill-blueprint",
               "internal/openclaw-integration-plan",
+              "internal/openclaw-channel-node-policy",
+              "internal/openclaw-infrastructure-optimization",
+              "internal/openclaw-readiness-checklist",
+              "internal/openclaw-learning-loop",
+              "internal/dealdash-agent-bridge-plugin",
+              "internal/dealdash-agent-connection-settings",
               "internal/skill-stack-matrix"
             ]
           }
@@ -114,6 +121,7 @@
             "pages": [
               "agents/manager-playbook",
               "agents/support-playbook",
+              "agents/agent-quick-start",
               "agents/change-safety",
               "agents/task-routing"
             ]

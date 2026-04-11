@@ -16,12 +16,14 @@ description: "Advisor-oriented review checklist and current remediations for Sup
   - `migrations/fix-supabase-advisors.sql`
 - current cycle patch:
   - `migrations/fix-supabase-advisors-2026-02-19.sql`
+  - `migrations/add-agent-approvals.sql`
 
 ## What Was Fixed This Cycle
 
 - converted remaining `auth.uid()` policy patterns to `(SELECT auth.uid())` in newer migrations
 - set `search_path` hardening for `update_contact_notes_updated_at()`
 - optimized admin menu policies that still used row-by-row `auth.uid()` evaluation
+- enabled RLS on `agent_approvals` and added an own-record `SELECT` policy for authenticated users while keeping inserts/updates/deletes backend-managed
 
 ## Ongoing Checks
 

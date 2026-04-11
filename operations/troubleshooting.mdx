@@ -100,6 +100,29 @@ Actions:
 3. run targeted auth integration/e2e tests
 4. document rollback path before retry
 
+## 6) SEO / AI Search Issues
+
+Symptoms:
+
+- pages not appearing in Google/Bing/AI answers
+- wrong title/description shown in snippets
+- private app routes being crawled
+
+Checks:
+
+```bash
+curl -I https://dealdash.neonoir.ai/robots.txt
+curl -I https://dealdash.neonoir.ai/sitemap.xml
+curl -I https://dealdash.neonoir.ai/llms.txt
+```
+
+Actions:
+
+1. verify route metadata behavior in `/client/src/components/SeoManager.tsx`
+2. verify only public routes exist in `/client/public/sitemap.xml`
+3. verify blocked routes in `/client/public/robots.txt`
+4. verify public context quality in `/client/public/llms.txt`
+
 ## Escalation Rule
 
 If issue touches auth, sharing, external/public routes, or data integrity, escalate to manager agent review before merge.

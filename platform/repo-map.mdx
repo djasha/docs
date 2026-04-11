@@ -12,14 +12,31 @@ description: "Platform-oriented map of critical folders and files for fast onboa
 - `/tests`: unit/integration/e2e suites
 - `/whatsapp-extension-react`: WhatsApp extension
 - `/linkshot-extension`: LinkShot extension
+- `/plugins`: repo-local Codex plugins, MCP servers, plugin skills, and assets
 
 ## High-Value Files
 
 - `/server/index.ts`: middleware and route mount order
 - `/server/middleware/auth.ts`: authentication enforcement
+- `/server/middleware/agent-auth.ts`: service-secret and acting-user auth for MCP agent calls
+- `/server/routes/settings.ts`: account settings and AI Agent Connection status endpoint
 - `/server/db/schema.ts`: entity and enum definitions
+- `/shared/agentBridge.ts`: provider-neutral agent route schema and allowlist
+- `/migrations/add-agent-approvals.sql`: persistent approval records for sensitive agent writes
+- `/client/src/pages/tools/ToolsIndex.tsx`: authenticated Tools hub for website utilities and integrations
+- `/client/src/pages/tools/AIAgentSetupTool.tsx`: Tools page wrapper for BYOA MCP setup and diagnostics
+- `/client/src/components/settings/AIAgentConnectionSection.tsx`: BYOA MCP settings card, permission tiers, and scoped logs
 - `/client/src/contexts/AuthContext.tsx`: frontend auth state lifecycle
 - `/client/src/lib/axios.ts`: auth header + 401 handling
+
+## Agent Bridge Plugin
+
+- `/plugins/dealdash-agent-bridge/.codex-plugin/plugin.json`: plugin manifest
+- `/plugins/dealdash-agent-bridge/.mcp.json`: MCP server registration
+- `/plugins/dealdash-agent-bridge/scripts/server.ts`: MCP stdio server
+- `/plugins/dealdash-agent-bridge/scripts/lib/client.ts`: `/api/agent/*` client
+- `/plugins/dealdash-agent-bridge/scripts/lib/media.ts`: photo upload and URL capture helpers
+- `/plugins/dealdash-agent-bridge/skills/dealdash-agent-bridge/SKILL.md`: agent-facing usage guide
 
 ## Navigation Rule
 

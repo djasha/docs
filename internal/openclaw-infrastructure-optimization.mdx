@@ -1,0 +1,61 @@
+---
+title: "OpenClaw Infrastructure Optimization"
+description: "Infrastructure baseline and hardening plan for dedicated DealDash OpenClaw operations."
+---
+
+## Baseline
+
+- Primary OpenClaw gateway on Hostinger VPS
+- Secondary fallback gateway on MacBook
+- DealDash app on Render
+- Supabase for production Postgres/Auth
+
+## Target
+
+1. App/data plane:
+   - Render for web/API runtime
+   - Supabase for Postgres/Auth
+2. Agent control plane:
+   - dedicated production node (`dealdash-prod-gateway`) on Hostinger VPS
+3. Fallback:
+   - MacBook node kept standby-only
+4. App-side controls:
+   - webhook auth and command allowlist
+5. Strict channel routing:
+   - WhatsApp external
+   - Telegram internal approvals
+
+## Deployment Surface Policy
+
+1. Render + Supabase are canonical production services.
+2. No active Vercel deployment artifacts are maintained in this repository.
+3. Vercel is not part of the primary runtime unless explicitly re-introduced.
+
+## Security Controls
+
+1. Runtime execution denied by default
+2. Manager confirmation required for one-off exec
+3. Full command audit logging
+4. Phase 1 write scope: docs + non-prod code paths
+5. All AI-authored changes must pass `pnpm check`, tests, docs checks, and OpenClaw readiness checks
+
+## Required Environment Variables
+
+- `OPENCLAW_GATEWAY_URL`
+- `OPENCLAW_NODE_ID`
+- `OPENCLAW_WEBHOOK_SECRET`
+- `OPENCLAW_EXEC_REQUIRES_CONFIRMATION=true`
+
+## Reliability
+
+1. Health checks for gateway and `/api/health`
+2. Alerts for gateway downtime and webhook auth failures
+3. Queue heavy analysis workflows instead of blocking message loops
+4. Add timeout/retry policy for agent webhooks
+5. Maintain failure-mode runbooks for failover, webhook signature incidents, and repeated execution failures
+
+## Rollout Cadence
+
+1. Week 1: supervised mode only
+2. Week 2: scoped writes after clean governance metrics
+3. Week 3+: expand capabilities with explicit risk signoff

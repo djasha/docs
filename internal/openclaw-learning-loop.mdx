@@ -1,0 +1,41 @@
+---
+title: "OpenClaw Learning Loop"
+description: "Controlled observe-synthesize-approve-apply loop for improving agent autonomy safely."
+---
+
+## Goal
+
+Learn manager and operator patterns over time without unsafe self-modification.
+
+## Learning Pipeline
+
+1. Observe:
+   - completed tasks
+   - approvals/rejections
+   - communication edits
+2. Synthesize:
+   - summarize patterns into operating profile
+3. Approve:
+   - manager reviews profile changes
+4. Apply:
+   - update prompts/skill policy only after approval
+
+## Data Files
+
+- Input:
+  - `/docs/agents/learning/interaction-log.jsonl`
+- Output:
+  - `/docs/agents/learning/OPERATING_PROFILE.md`
+
+## Command
+
+```bash
+pnpm openclaw:learn
+```
+
+## Safety Guarantees
+
+1. No autonomous policy mutation.
+2. No secrets in learning data.
+3. External communication privacy rules remain fixed.
+4. Human signoff required before behavior promotion.

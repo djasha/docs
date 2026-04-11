@@ -7,6 +7,29 @@ description: "Phased integration model for OpenClaw manager/support agents in De
 
 Enable OpenClaw-driven execution without compromising safety, reliability, or documentation quality.
 
+## Locked Decisions (2026-02-20, confirmed 2026-02-21)
+
+1. Channels:
+   - WhatsApp for external influencer/client communication
+   - Telegram for internal manager approvals and operational updates
+2. Runtime ownership:
+   - Render is primary app runtime
+   - Supabase is primary Postgres/Auth runtime
+   - Hostinger OpenClaw node is primary control plane
+3. Node topology:
+   - dedicated Hostinger VPS node is primary
+   - MacBook node is fallback only
+4. Vercel scope:
+   - no active Vercel deployment path is maintained
+   - not canonical production infrastructure
+5. Exec policy:
+   - `exec/process` is denied by default
+   - explicit manager confirmation is required for one-off execution
+6. Initial write scope:
+   - docs and non-production code paths
+7. External communication policy:
+   - use neutral role language; do not expose internal relationship context
+
 ## Role Model
 
 - `Manager agent`: planning, routing, merge gating, risk ownership
@@ -26,6 +49,19 @@ Enable OpenClaw-driven execution without compromising safety, reliability, or do
 4. Continuous governance
    - weekly health review for code, CI, docs, security posture
 
+## Quality and Stability Program
+
+1. Required gates on all AI-authored changes:
+   - `pnpm check`
+   - `pnpm test:unit`
+   - `pnpm test:integration`
+   - `pnpm docs:check`
+   - `pnpm openclaw:check`
+2. Active quality backlog:
+   - reduce `any` in high-risk backend routes
+   - eliminate React `act(...)` warning noise in tests
+   - reduce non-actionable Node warning noise in test logs
+
 ## Non-Negotiable Gates
 
 - no merge without docs updates for behavior changes
@@ -37,3 +73,10 @@ Enable OpenClaw-driven execution without compromising safety, reliability, or do
 - faster safe delivery
 - fewer regressions in high-risk paths
 - consistent onboarding for new human and AI contributors
+
+## Source Docs
+
+- [OpenClaw Architecture](https://docs.openclaw.ai/concepts/architecture)
+- [OpenClaw Gateway Configuration](https://docs.openclaw.ai/gateway/configuration)
+- [OpenClaw Configuration Reference](https://docs.openclaw.ai/gateway/configuration-reference)
+- [OpenClaw Security](https://docs.openclaw.ai/gateway/security)

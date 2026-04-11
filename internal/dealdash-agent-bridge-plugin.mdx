@@ -32,6 +32,8 @@ Operators can verify the safe bring-your-own-agent surface inside DealDash at `/
 
 The public DealDash Agent Kit repository is [djasha/dealdash-agent-kit](https://github.com/djasha/dealdash-agent-kit). It contains sanitized Markdown instructions, skill files, and MCP setup notes for agents. It must never contain real secrets, user data, production tokens, database URLs, or private local paths.
 
+Render MCP is a separate optional infrastructure plugin. Use [Add Render MCP](../agents/render-mcp-setup.mdx) or `/tools/render-mcp` only for Render services, deploys, logs, metrics, databases, and environment-variable troubleshooting. Do not use Render MCP for DealDash app data.
+
 ## Tool Families
 
 - Short links: create from URL, list, stats, delete
@@ -43,7 +45,24 @@ The public DealDash Agent Kit repository is [djasha/dealdash-agent-kit](https://
 - Influencers: search, get, latest, upsert, by phone, by promo code, stats, last progress
 - Activity: feed and analytics
 - Suggestions: pipeline summary, next actions, payment followups, content followups
+- Context: search and resource hints
+- Memory: list, create, archive
 - Approvals: request and status
+
+## MCP Resources And Prompts
+
+The MCP server exposes fixed resources for hosts that support `resources/read`:
+
+- `dealdash://context/search`: default search across recent accessible DealDash context.
+- `dealdash://linkshot/view-logs`: recent LinkShot View Logs.
+- `dealdash://memory/active`: active human-visible agent memory.
+
+The MCP server also exposes prompts:
+
+- `dealdash_read_only_start`: start with context search, screenshots, View Logs, and due views.
+- `dealdash_image_to_link`: guide a safe image upload and short-link return flow.
+
+Use resources for context, prompts for guided workflows, and tools for actions.
 
 ## Approval Tiers
 
@@ -59,7 +78,7 @@ V1 intentionally does not expose admin/auth/team tools, runtime execution, files
 
 URL screenshot capture accepts only `http` and `https` URLs and blocks local/private targets by default. Use `DEALDASH_AGENT_ALLOW_PRIVATE_CAPTURE_URLS=true` only for trusted development capture.
 
-Photo uploads accept PNG, JPEG/JPG, WebP, GIF, AVIF, and BMP raster images by default. The MCP bridge enforces `DEALDASH_AGENT_MAX_IMAGE_BYTES` before sending the payload to DealDash. The current default binary image limit is 25MB; the DealDash API JSON body limit has 50MB headroom for base64 encoding. Raise those limits only in controlled deployments because base64 uploads are memory-heavy.
+Photo uploads accept PNG, JPEG/JPG, WebP, GIF, AVIF, and BMP raster images by default. The MCP bridge enforces `DEALDASH_AGENT_MAX_IMAGE_BYTES` before sending the payload to DealDash. The current default binary image limit is 40MB; the DealDash API JSON body limit has 64MB headroom for base64 encoding. Raise those limits only in controlled deployments because base64 uploads are memory-heavy.
 
 SVG, HEIC, and TIFF are not accepted by default. SVG can contain active content, and HEIC/TIFF are not reliably previewable in browser-based DealDash screenshot galleries. Messaging adapters should convert those formats to PNG/JPEG/WebP before calling `screenshots.upload_photo`.
 
@@ -74,6 +93,21 @@ The bridge applies the same acting-user boundaries as the DealDash website:
 owned records are visible by user ID, team-shared deal logs require active team
 membership and deal sharing, and screenshot previews are included only when the
 acting user owns or can explicitly view the screenshot.
+
+## Context Search And Memory
+
+Use `context.search` before guessing exact IDs. It searches deals, screenshots, LinkShot logs, short links, contacts, influencers, and active memory. Useful filters:
+
+- `q`: text query
+- `scope`: `mine` or `mine-and-shared`
+- `types`: comma-separated list such as `deals,screenshots,view_logs,memory`
+- `limit` and `offset`
+
+Search results include a `resourceUri`, web link when available, access/ownership context, and metadata. Shared data still follows website sharing rules.
+
+Use `memory.create` only after telling the user the exact title, content, tags, and source you will save. Memory is visible, account-scoped, and searchable through `context.search`.
+
+Use `memory.archive` to remove stale memory from active context. Do not promise permanent deletion in V1.
 
 ## Related Settings Page
 

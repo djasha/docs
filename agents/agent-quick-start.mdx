@@ -34,12 +34,14 @@ Use these sources in order:
 1. Simple user guide: https://docs.drdj.me/agents/agent-quick-start
 2. Agent setup files: https://github.com/djasha/dealdash-agent-kit
 3. Exact tool reference, only if needed: https://docs.drdj.me/internal/dealdash-agent-bridge-plugin
+4. Optional Render deploy plugin, only for deploy logs/infrastructure: https://docs.drdj.me/agents/render-mcp-setup
 
 Rules:
 - Start read-only.
 - Do not ask for my DealDash password.
 - Do not ask me to paste secrets into chat.
 - If an Agent key is needed, ask me to add it only to secure MCP/environment settings.
+- If a Render key is needed for deploy checks, ask me to add RENDER_API_KEY only to secure MCP/environment settings.
 - Do not print, store, or commit secrets.
 - Wait for my approval before any write, delete, payment, sharing, or visibility change.
 
@@ -50,12 +52,15 @@ First actions:
    cd dealdash-agent-kit
 3. Tell me the shortest safe setup path for my AI app.
 4. After the connection works, run only read-only checks first:
+   - DealDash context search
    - latest screenshots
    - LinkShot View Logs
    - LinkShot To-Do / due views
+   - Render latest deploy/log status only if I ask for deployment help
 5. When I explicitly ask for it:
    - shorten a URL with the short link tool
    - upload an image with the screenshot tool and return the short link
+   - save a useful memory only after telling me what it will save
 6. If something fails, explain the error in plain language and give me one next step.
 
 Success:
@@ -73,9 +78,16 @@ cd dealdash-agent-kit
 
 That public repo contains instructions and placeholder examples only. It does not contain passwords, keys, or private DealDash data.
 
+## Optional Render Deploy Plugin
+
+Use [Add Render MCP](render-mcp-setup.mdx) only when you want the agent to inspect deploys, logs, metrics, services, or environment setup.
+
+Render MCP does not replace DealDash MCP. It is only for infrastructure. DealDash screenshots, LinkShot logs, short links, deals, contacts, tasks, payments, and memory stay in the DealDash connector.
+
 ## Good First Requests
 
 - "Show my latest screenshots."
+- "Search DealDash for this promo code, person, link, or screenshot."
 - "Show my LinkShot View Logs for this week."
 - "Which posts still need views checked?"
 - "Summarize screenshots shared with me."
@@ -87,9 +99,11 @@ The first five are read-only checks. They help you confirm the connection before
 
 Shortening a link or uploading a screenshot creates a new DealDash record. Ask the agent to explain it first if you want to stay read-only.
 
+Agent memory is optional. Ask the agent what it wants to save before allowing it. Good memories are short notes like preferred image format, repeated troubleshooting steps, or a decision you want future agents to remember.
+
 ## Image Uploads
 
-DealDash accepts common web images: PNG, JPG/JPEG, WebP, GIF, AVIF, and BMP up to 25MB by default.
+DealDash accepts common web images: PNG, JPG/JPEG, WebP, GIF, AVIF, and BMP up to 40MB by default.
 
 If an image from WhatsApp, Telegram, Slack, Mattermost, OpenClaw, Hermes, Codex, or Claude fails, ask the agent to convert it to PNG, JPG, or WebP and try again. SVG, HEIC, and TIFF are intentionally not accepted by default because they can be unsafe or unreliable in browser previews.
 
@@ -106,6 +120,7 @@ If an image from WhatsApp, Telegram, Slack, Mattermost, OpenClaw, Hermes, Codex,
 ## Why There Are Links
 
 - **Simple guide:** for people.
+- **Render MCP guide:** for deployment logs and service checks only.
 - **Agent setup files:** for the AI agent when it needs commands or examples.
 - **Agent reference:** only for exact tool names, API routes, and headers.
 
@@ -125,6 +140,7 @@ Ask the agent to explain the change before approving any of these:
 These pages are tagged for agents that need exact names, routes, and tool contracts:
 
 - [Agent-optimized bridge reference](../internal/dealdash-agent-bridge-plugin.mdx)
+- [Render MCP setup](render-mcp-setup.mdx)
 - [API surface](../backend/api-surface.mdx)
 - [Task routing](task-routing.mdx)
 - [Public DealDash Agent Kit](https://github.com/djasha/dealdash-agent-kit)

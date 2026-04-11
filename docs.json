@@ -122,6 +122,7 @@
               "agents/manager-playbook",
               "agents/support-playbook",
               "agents/agent-quick-start",
+              "agents/render-mcp-setup",
               "agents/change-safety",
               "agents/task-routing"
             ]

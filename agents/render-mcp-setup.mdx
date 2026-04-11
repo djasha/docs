@@ -1,0 +1,119 @@
+---
+title: "Add Render MCP"
+description: "A simple guide for connecting an AI agent to Render deployment data safely."
+---
+
+This page is for non-technical users.
+
+Use Render MCP when you want an AI agent to check DealDash deploys, logs, metrics, services, or environment setup.
+
+Use DealDash MCP for screenshots, LinkShot View Logs, short links, deals, contacts, tasks, payments, and memory.
+
+## Fastest Path
+
+1. Open DealDash.
+2. Go to **Tools > Render MCP**.
+3. Click **Copy prompt**.
+4. Paste the prompt into your AI app.
+5. Add your Render API key only in secure MCP or environment settings.
+6. Ask for read-only deploy status first.
+
+Do not paste the Render API key into normal chat.
+
+## Ready Prompt
+
+Copy this from the DealDash dashboard so the links stay current.
+
+```text
+You are my DealDash Render deployment assistant.
+
+Goal:
+Connect to Render safely so you can check DealDash deploys, logs, metrics, and environment setup.
+
+Use these sources:
+1. Simple Render MCP guide: https://docs.drdj.me/agents/render-mcp-setup
+2. Official Render MCP docs: https://render.com/docs/mcp-server
+3. DealDash app data connector, only if needed: https://docs.drdj.me/agents/agent-quick-start
+
+Rules:
+- Do not ask for my Render API key in normal chat.
+- Ask me to add RENDER_API_KEY only in secure MCP/environment settings.
+- Start with read-only Render checks.
+- Do not print secrets from logs, environment variables, databases, or service details.
+- Do not update environment variables unless I approve the exact service, key, and new value first.
+- Use DealDash MCP for screenshots, LinkShot logs, short links, deals, and app data. Use Render MCP only for deployment infrastructure.
+
+First actions:
+1. Help me add the Render MCP server using the secure RENDER_API_KEY setting.
+2. Set my Render workspace to the one that hosts DealDash.
+3. List the DealDash service.
+4. Show the latest deploy status and recent error logs.
+5. Explain any problem in plain language and give me one next step.
+
+Success:
+Show the selected workspace, DealDash service, latest deploy status, and whether any action needs approval.
+```
+
+## What To Add
+
+For Codex or AI apps that support hosted HTTP MCP servers:
+
+```toml
+[mcp_servers.render]
+url = "https://mcp.render.com/mcp"
+http_headers = { Authorization = "Bearer <YOUR_RENDER_API_KEY>" }
+```
+
+For Claude Desktop, Windsurf, or clients that use local MCP commands:
+
+```json
+{
+  "mcpServers": {
+    "render": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://mcp.render.com/mcp",
+        "--header",
+        "Authorization: Bearer ${RENDER_API_KEY}"
+      ],
+      "env": {
+        "RENDER_API_KEY": "<YOUR_RENDER_API_KEY>"
+      }
+    }
+  }
+}
+```
+
+The repo also includes a disabled sample at `plugins/dealdash-agent-bridge/.mcp.json` under `render-deploy`.
+
+## Good First Requests
+
+- "Select the Render workspace that hosts DealDash."
+- "List DealDash Render services."
+- "Show the latest DealDash deploy status."
+- "Show recent error logs for DealDash."
+- "Check whether the DealDash service has the required env names."
+
+## What Needs Approval
+
+Ask the agent to explain the exact service, key, and new value before approving any Render environment-variable update.
+
+Render MCP is not a deploy button. It does not trigger deploys or modify most service settings. Use git push or the Render dashboard for those actions.
+
+## Common Problems
+
+| Problem                                  | What To Do                                                                                         |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| The agent asks for the Render API key    | Stop. Add the key only to secure MCP/environment settings as `RENDER_API_KEY`.                     |
+| It cannot find DealDash services         | Ask it to list workspaces first, then select the workspace that hosts DealDash.                    |
+| It tries to read LinkShot data in Render | Use the DealDash MCP connector instead. Render MCP is only for infrastructure.                     |
+| It wants to update env vars              | Approve only after it names the exact service, env key, and new value.                             |
+| It cannot trigger a deploy               | That is expected. Push to `main` or use the Render dashboard, then ask Render MCP to inspect logs. |
+
+## Official Source
+
+Render's official MCP docs are here: [Render MCP Server](https://render.com/docs/mcp-server).
+
+Those docs include setup examples for Cursor, Codex, Claude Code, Claude Desktop, Jules, Windsurf, other tools, Docker, and local executable setups.

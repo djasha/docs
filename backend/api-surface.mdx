@@ -44,7 +44,19 @@ This is a planning map, not a strict OpenAPI replacement.
 - Approval confirmation is restricted to trusted adapters with `x-dd-approval-confirm-secret`.
 - OpenClaw policy belongs in channel adapters; the backend remains provider-neutral.
 
-Allowlisted V1 families are short links, screenshots, deals, payments, tasks, contacts, influencers, activity, suggestions, and approvals. Admin/auth/team, runtime/filesystem, and bulk destructive tools are excluded.
+Allowlisted V1 families are short links, screenshots, deals, payments, tasks, contacts, influencers, activity, suggestions, context, memory, and approvals. Admin/auth/team, runtime/filesystem, and bulk destructive tools are excluded.
+
+## Agent Context And Memory
+
+These endpoints make existing DealDash data easier for MCP clients to find before they call narrower tools.
+
+- `GET /api/agent/context/resources`: Tier 0 read that returns MCP resource hints such as `dealdash://context/search`, `dealdash://linkshot/view-logs`, and `dealdash://memory/active`.
+- `GET /api/agent/context/search`: Tier 0 read across deals, screenshots, LinkShot view logs, short links, contacts, influencers, and active agent memory. Filters: `q`, `scope`, `types`, `limit`, and `offset`.
+- `GET /api/agent/memory`: Tier 0 read for human-visible account-scoped memories.
+- `POST /api/agent/memory`: Tier 1 write to create a durable memory after user approval.
+- `PATCH /api/agent/memory/:id/archive`: Tier 1 reversible write. Memory is archived, not hard-deleted.
+
+Memory records live in `agent_memories`, are scoped by `user_id`, and include source fields, tags, confidence, actor/channel provenance, and status. This is the controlled memory layer. pgvector semantic search is the next upgrade after embedding generation and cost/retention rules are configured.
 
 ## LinkShot Data Visibility
 
@@ -92,7 +104,7 @@ Supported filters:
 
 Rows include checked date, total views, parsed per-platform values, missing platform labels, source URL, deal/promo context, owner/sharer context, and screenshot evidence. Screenshot previews are returned only when the current user owns the screenshot or has an explicit screenshot share; otherwise the row reports a redacted attachment reference.
 
-Screenshot upload endpoints accept base64 raster images as PNG, JPEG/JPG, WebP, GIF, AVIF, or BMP. The default binary image limit is 25MB, with a 50MB JSON body limit for base64 request headroom. `SCREENSHOT_MAX_IMAGE_BYTES`, `DEALDASH_AGENT_MAX_IMAGE_BYTES`, and `API_JSON_BODY_LIMIT` can raise or lower limits per deployment. SVG, HEIC, and TIFF should be converted by clients or messaging adapters before upload.
+Screenshot upload endpoints accept base64 raster images as PNG, JPEG/JPG, WebP, GIF, AVIF, or BMP. The default binary image limit is 40MB, with a 64MB JSON body limit for base64 request headroom. `SCREENSHOT_MAX_IMAGE_BYTES`, `DEALDASH_AGENT_MAX_IMAGE_BYTES`, and `API_JSON_BODY_LIMIT` can raise or lower limits per deployment. SVG, HEIC, and TIFF should be converted by clients or messaging adapters before upload.
 
 ### Agent Bridge
 

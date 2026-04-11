@@ -107,7 +107,7 @@ for MCP usage.
 
 `GET /api/settings/agent-connection` is an authenticated, read-only Settings endpoint for Bring Your Own Agent setup. It returns safe MCP status, setup instructions, permission tiers, tool groups, future AI feature slots, and recent `agent_tool_call` logs scoped to the current user.
 
-The safe setup payload includes a human guide URL, the public DealDash Agent Kit repo URL, an agent-optimized docs URL, the MCP command/config path, and the official MCP SDK URL. Public and browser-visible responses expose names and links only, never secret values.
+The safe setup payload includes a human guide URL, the public DealDash Agent Kit repo URL, an agent-optimized docs URL, and the MCP command/config path. Public and browser-visible responses expose names and links only, never secret values.
 
 The endpoint returns env names and boolean configuration flags only. It must not expose service secret values, approval confirmation secret values, raw request payloads, image data, payment payloads, or cross-account logs.
 

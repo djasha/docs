@@ -24,7 +24,7 @@ The endpoint returns env names and boolean configuration flags only. It never re
 - `schemaVersion`: current DealDash Agent Bridge schema version.
 - `actingUserId`: current authenticated user ID for MCP acting-user context.
 - `status`: MCP secret configured, approval confirmation configured, state, recent count, and last activity.
-- `mcp`: server name, bridge path, config path, command, backend base URL, simple docs URL, agent-optimized docs URL, public DealDash Agent Kit GitHub repo, and MCP TypeScript SDK GitHub repo.
+- `mcp`: server name, bridge path, config path, command, backend base URL, simple docs URL, agent-optimized docs URL, and public DealDash Agent Kit GitHub repo.
 - `auth`: required env names, optional env names, required headers, and optional headers.
 - `permissions`: Tier 0, Tier 1, and Tier 2 summaries.
 - `toolGroups`: canonical provider-neutral tool families from the shared schema.
@@ -37,7 +37,7 @@ The endpoint returns env names and boolean configuration flags only. It never re
 The Tools hub includes:
 
 - `/tools` card: `AI Agent Setup`, simple setup badge, and docs link.
-- `/tools/ai-agent-setup`: copyable ready prompt, simple steps, safety notes, and the same safe connection card used in Settings.
+- `/tools/ai-agent-setup`: copyable ready prompt, simple steps, common blockers, safe terminal command, and an advanced connection panel hidden behind **Show details**.
 
 The connection card contains:
 
@@ -49,7 +49,7 @@ The connection card contains:
 - Tool family summary.
 - Recent user-scoped agent logs.
 - Future AI feature slots for analysis and summaries.
-- Links to the simple human guide, public DealDash Agent Kit, agent-optimized bridge reference, API docs, and MCP SDK GitHub repo.
+- Links to the simple human guide, public DealDash Agent Kit, agent-optimized bridge reference, and API docs.
 
 ## Security Rules
 
@@ -69,4 +69,3 @@ The connection card contains:
 - [Change Safety Protocol](change-protocol.mdx)
 - [API Surface](../backend/api-surface.mdx)
 - [Public DealDash Agent Kit](https://github.com/djasha/dealdash-agent-kit)
-- [MCP TypeScript SDK GitHub](https://github.com/modelcontextprotocol/typescript-sdk)

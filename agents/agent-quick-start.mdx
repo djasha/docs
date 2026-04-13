@@ -13,7 +13,7 @@ Use it when you want Codex, ChatGPT, Claude, OpenClaw, or another AI agent to he
 2. Go to **Tools > AI Agent Setup**.
 3. Click **Copy prompt**.
 4. Paste the prompt into your AI app.
-5. Approve only secure sign-in or secure Agent key setup.
+5. If the agent is not connected, open the DealDash login approval link it sends back.
 6. Ask for read-only data first.
 
 You do not need to understand MCP to start. MCP is just the connection method the AI app may use in the background.
@@ -22,49 +22,39 @@ You do not need to understand MCP to start. MCP is just the connection method th
 
 Copy this from the DealDash dashboard so the links stay current.
 
-The prompt is intentionally structured so different AI apps understand the same thing: the goal, the safe sources, the rules, the first actions, and what success looks like.
+The prompt is short on purpose. It gives the agent safe sources, starts with read-only data, and keeps secrets out of chat.
 
 ```text
-You are my DealDash setup assistant.
+You are my DealDash agent setup helper.
 
-Goal:
-Connect my AI app to DealDash safely, then show read-only DealDash data first.
+Start read-only. Use the DealDash Agent Bridge only for DealDash data: screenshots, LinkShot View Logs, due-view checks, short links, deals, contacts, tasks, suggestions, and memory.
 
-Use these sources in order:
-1. Simple user guide: https://docs.drdj.me/agents/agent-quick-start
-2. Agent setup files: https://github.com/djasha/dealdash-agent-kit
-3. Exact tool reference, only if needed: https://docs.drdj.me/internal/dealdash-agent-bridge-plugin
-4. Optional Render deploy plugin, only for deploy logs/infrastructure: https://docs.drdj.me/agents/render-mcp-setup
+Setup sources:
+- Simple guide: https://docs.drdj.me/agents/agent-quick-start
+- Public setup kit: https://github.com/djasha/dealdash-agent-kit
+- Exact tool reference, only if needed: https://docs.drdj.me/internal/dealdash-agent-bridge-plugin
 
-Rules:
-- Start read-only.
-- Do not ask for my DealDash password.
-- Do not ask me to paste secrets into chat.
-- If an Agent key is needed, ask me to add it only to secure MCP/environment settings.
-- If a Render key is needed for deploy checks, ask me to add RENDER_API_KEY only to secure MCP/environment settings.
-- Do not print, store, or commit secrets.
-- Wait for my approval before any write, delete, payment, sharing, or visibility change.
+Safety rules:
+- Do not ask for my DealDash password or any secret in chat.
+- If DealDash is not connected, start DealDash login authorization and send me the approval link.
+- Do not ask me for API keys, service secrets, or internal IDs.
+- Do not require internal operator secrets, user IDs, or deploy settings for normal user setup.
+- First show only data you can read.
+- Before creating, updating, deleting, sharing, sending messages, payments, or saving memory, explain the change and wait for my approval.
 
-First actions:
-1. Read the simple guide.
-2. If you need setup files, use the public Agent setup files. You may run:
-   git clone https://github.com/djasha/dealdash-agent-kit.git
-   cd dealdash-agent-kit
-3. Tell me the shortest safe setup path for my AI app.
-4. After the connection works, run only read-only checks first:
-   - DealDash context search
-   - latest screenshots
-   - LinkShot View Logs
-   - LinkShot To-Do / due views
-   - Render latest deploy/log status only if I ask for deployment help
-5. When I explicitly ask for it:
-   - shorten a URL with the short link tool
-   - upload an image with the screenshot tool and return the short link
-   - save a useful memory only after telling me what it will save
-6. If something fails, explain the error in plain language and give me one next step.
+Connection bootstrap:
+- If MCP tool agent_auth_start is available, call it and send me only the returned authorizeUrl.
+- If MCP is not connected but you can make HTTPS requests, POST to https://dealdash.neonoir.ai/api/agent/auth/start with JSON {"actorId":"openclaw-agent","channel":"openclaw:setup"}, send me only auth.authorizeUrl, keep auth.deviceCode private inside your session, then poll auth.statusEndpoint.
+- If you cannot call MCP tools or make HTTPS requests, say that your AI environment lacks tool access. Do not ask me for internal env vars.
 
-Success:
-Show what connected, what DealDash data you can read, and what still needs approval.
+First read-only checks:
+1. If not connected, create a DealDash login approval link with MCP or direct HTTPS and wait for me to approve it.
+2. Search DealDash context for my account.
+3. Show latest screenshots.
+4. Show recent LinkShot View Logs.
+5. Show posts that still need view checks.
+
+After that, tell me what connected, what data you can read, and the safest next step.
 ```
 
 ## Command For Terminal Agents
@@ -77,12 +67,6 @@ cd dealdash-agent-kit
 ```
 
 That public repo contains instructions and placeholder examples only. It does not contain passwords, keys, or private DealDash data.
-
-## Optional Render Deploy Plugin
-
-Use [Add Render MCP](render-mcp-setup.mdx) only when you want the agent to inspect deploys, logs, metrics, services, or environment setup.
-
-Render MCP does not replace DealDash MCP. It is only for infrastructure. DealDash screenshots, LinkShot logs, short links, deals, contacts, tasks, payments, and memory stay in the DealDash connector.
 
 ## Good First Requests
 
@@ -109,18 +93,17 @@ If an image from WhatsApp, Telegram, Slack, Mattermost, OpenClaw, Hermes, Codex,
 
 ## Common Problems
 
-| Problem                                           | What To Do                                                                                                                  |
-| ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| The agent asks for your DealDash password         | Stop. Passwords do not belong in AI chat. Use sign-in or secure Agent key setup only.                                       |
-| The agent says the Agent key is missing           | Ask an admin to set `DEALDASH_AGENT_SERVICE_SECRET` in secure server or MCP settings. Do not paste the key into chat.       |
-| The agent cannot see screenshots or LinkShot logs | Check the right DealDash account, date filters, LinkShot upload status, and whether shared/team records should be included. |
-| The agent says a write is blocked                 | That is expected for sensitive actions. Ask the agent to explain the change, then approve only if it matches what you want. |
-| The AI app does not support MCP                   | Use a terminal-based agent, Codex, Claude Code, OpenClaw, or another agent that can run the DealDash Agent Bridge.          |
+| Problem                                              | What To Do                                                                                                                   |
+| ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| The agent asks for your DealDash password            | Stop. Passwords do not belong in AI chat. Ask for a DealDash login approval link instead.                                    |
+| The agent asks for API keys, service secrets, or IDs | Ask it to use DealDash login-link auth. Normal setup uses `agent_auth_start` or the public `/api/agent/auth/start` endpoint. |
+| The agent cannot see screenshots or LinkShot logs    | Check the right DealDash account, date filters, LinkShot upload status, and whether shared/team records should be included.  |
+| The agent says a write is blocked                    | That is expected for sensitive actions. Ask the agent to explain the change, then approve only if it matches what you want.  |
+| The AI app does not support MCP                      | Use a terminal-based agent, Codex, Claude Code, OpenClaw, or another agent that can run the DealDash Agent Bridge.           |
 
 ## Why There Are Links
 
 - **Simple guide:** for people.
-- **Render MCP guide:** for deployment logs and service checks only.
 - **Agent setup files:** for the AI agent when it needs commands or examples.
 - **Agent reference:** only for exact tool names, API routes, and headers.
 
@@ -140,7 +123,6 @@ Ask the agent to explain the change before approving any of these:
 These pages are tagged for agents that need exact names, routes, and tool contracts:
 
 - [Agent-optimized bridge reference](../internal/dealdash-agent-bridge-plugin.mdx)
-- [Render MCP setup](render-mcp-setup.mdx)
 - [API surface](../backend/api-surface.mdx)
 - [Task routing](task-routing.mdx)
 - [Public DealDash Agent Kit](https://github.com/djasha/dealdash-agent-kit)

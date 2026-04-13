@@ -17,7 +17,30 @@ Human operators should start with [Connect An AI Agent](../agents/agent-quick-st
 
 ## Backend Auth
 
-Agent calls require gateway-delegated authentication.
+Normal user setup uses login-link auth:
+
+1. The MCP bridge calls `POST /api/agent/auth/start`.
+2. The agent sends the returned DealDash approval link to the user.
+3. The user opens the link, signs in, and approves.
+4. The bridge polls `GET /api/agent/auth/status/:requestId?deviceCode=...`.
+5. After approval, the bridge stores the scoped token inside the MCP process.
+
+If the agent does not yet have the MCP bridge installed but can make HTTPS
+requests, it may start the same flow directly:
+
+```bash
+curl -fsS -X POST https://dealdash.neonoir.ai/api/agent/auth/start \
+  -H 'content-type: application/json' \
+  --data '{"actorId":"openclaw-agent","channel":"openclaw:setup"}'
+```
+
+The agent should send only `auth.authorizeUrl` to the user, keep
+`auth.deviceCode` and any approved token inside its tool/session state, and
+poll `auth.statusEndpoint` after the user approves. A normal user setup must not
+be blocked on `DEALDASH_AGENT_SERVICE_SECRET`, `DEALDASH_AGENT_DEFAULT_USER_ID`,
+or deployment provider settings.
+
+Operator-managed adapters can still use gateway-delegated authentication.
 
 - `Authorization: Bearer <DEALDASH_AGENT_SERVICE_SECRET>`
 - `x-dd-acting-user-id`
@@ -26,13 +49,13 @@ Agent calls require gateway-delegated authentication.
 - `x-dd-request-id`
 - `x-dd-approval-id` for sensitive writes
 
-The backend enforces acting-user scope before any proxied app route runs.
+The backend enforces acting-user scope before any proxied app route runs. Login
+approval links are generated from `APP_ORIGIN` first, then deployment fallback
+origins if needed; the short-link domain is not the preferred approval origin.
 
-Operators can verify the safe bring-your-own-agent surface inside DealDash at `/settings` -> **AI Agent Connection**. The Settings card shows connection status, `.mcp.json` path, MCP command, required env/header names, acting-user ID, permission tiers, tool families, and recent scoped logs without exposing secret values.
+Operators can verify the safe bring-your-own-agent surface inside DealDash at `/settings` -> **AI Agent Connection**. The Settings card shows connection status, `.mcp.json` path, MCP command, login-link endpoints, permission tiers, tool families, and recent scoped logs without exposing secret values.
 
 The public DealDash Agent Kit repository is [djasha/dealdash-agent-kit](https://github.com/djasha/dealdash-agent-kit). It contains sanitized Markdown instructions, skill files, and MCP setup notes for agents. It must never contain real secrets, user data, production tokens, database URLs, or private local paths.
-
-Render MCP is a separate optional infrastructure plugin. Use [Add Render MCP](../agents/render-mcp-setup.mdx) or `/tools/render-mcp` only for Render services, deploys, logs, metrics, databases, and environment-variable troubleshooting. Do not use Render MCP for DealDash app data.
 
 ## Tool Families
 

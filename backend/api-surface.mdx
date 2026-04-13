@@ -38,8 +38,11 @@ This is a planning map, not a strict OpenAPI replacement.
 `/api/agent/*` is the canonical backend surface for MCP-capable agents. It is shared by Claude Code, OpenAI/Codex or ChatGPT MCP clients, OpenClaw adapters, and future agent hosts.
 
 - `GET /api/agent/schema` returns the tool-family schema and approval tiers.
-- Agent calls authenticate with `Authorization: Bearer <DEALDASH_AGENT_SERVICE_SECRET>`.
-- Acting-user headers are required: `x-dd-acting-user-id`, `x-dd-channel`, `x-dd-actor-id`, and `x-dd-request-id`.
+- Login-link auth starts with `POST /api/agent/auth/start`; the user opens `/agent/authorize/:requestId`; the agent polls `GET /api/agent/auth/status/:requestId?deviceCode=...`.
+- Tool calls authenticate with `Authorization: Bearer <DEALDASH_AGENT_ACCESS_TOKEN>` for login-link tokens or `Authorization: Bearer <DEALDASH_AGENT_SERVICE_SECRET>` for operator-managed adapters.
+- Login approval links prefer `APP_ORIGIN`; `RENDER_EXTERNAL_URL` and `SHORT_LINK_DOMAIN` are fallback origins only.
+- Agents without MCP installed may start login-link auth directly by posting to `https://dealdash.neonoir.ai/api/agent/auth/start`; normal setup does not require service secrets, default user IDs, or deployment provider keys.
+- Tool calls require `x-dd-request-id`. Operator-managed service-secret auth also requires `x-dd-acting-user-id`; `x-dd-channel` and `x-dd-actor-id` identify the adapter.
 - Sensitive writes require `x-dd-approval-id`.
 - Approval confirmation is restricted to trusted adapters with `x-dd-approval-confirm-secret`.
 - OpenClaw policy belongs in channel adapters; the backend remains provider-neutral.
@@ -109,9 +112,9 @@ Screenshot upload endpoints accept base64 raster images as PNG, JPEG/JPG, WebP, 
 ### Agent Bridge
 
 `/api/agent/deals/view-logs` exposes the same read-only data as a Tier 0
-`deals.view_logs` operation for MCP-capable agents. Agent calls must still use
-service-secret authentication plus acting-user headers, and the backend applies
-the same user/team visibility rules as the website.
+`deals.view_logs` operation for MCP-capable agents. Agent calls use either the
+login-link access token or an internal operator-managed service secret, and the
+backend applies the same user/team visibility rules as the website.
 
 See [LinkShot Extension](../extensions/linkshot-extension.mdx) for the website
 quick view and [DealDash Agent Bridge Plugin](../internal/dealdash-agent-bridge-plugin.mdx)

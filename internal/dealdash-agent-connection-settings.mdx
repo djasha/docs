@@ -22,10 +22,10 @@ The endpoint returns env names and boolean configuration flags only. It never re
 ## Response Sections
 
 - `schemaVersion`: current DealDash Agent Bridge schema version.
-- `actingUserId`: current authenticated user ID for MCP acting-user context.
-- `status`: MCP secret configured, approval confirmation configured, state, recent count, and last activity.
+- `actingUserId`: current authenticated DealDash user ID, retained for internal diagnostics only.
+- `status`: login-link availability, approval confirmation configured, state, recent count, and last activity.
 - `mcp`: server name, bridge path, config path, command, backend base URL, simple docs URL, agent-optimized docs URL, and public DealDash Agent Kit GitHub repo.
-- `auth`: required env names, optional env names, required headers, and optional headers.
+- `auth`: login-link endpoints, safe optional env names, required headers, and optional headers.
 - `permissions`: Tier 0, Tier 1, and Tier 2 summaries.
 - `toolGroups`: canonical provider-neutral tool families from the shared schema.
 - `workflows`: common link, screenshot, contact, and suggestion workflows.
@@ -44,7 +44,7 @@ The connection card contains:
 - Header and refresh action.
 - Connection status, permission gate, and recent activity cards.
 - MCP connection instructions with repo-local `.mcp.json` and server command.
-- Required env/header names and current acting-user ID.
+- Login-link auth endpoints, the direct HTTPS login start URL, token env name, and operator-only env/header diagnostics.
 - Tier 0/Tier 1/Tier 2 permission explanation.
 - Tool family summary.
 - Recent user-scoped agent logs.
@@ -55,6 +55,8 @@ The connection card contains:
 
 - Do not show or set `DEALDASH_AGENT_SERVICE_SECRET` from the browser.
 - Do not show or set `DEALDASH_AGENT_APPROVAL_CONFIRM_SECRET` from the browser.
+- Normal users approve `/agent/authorize/:requestId`; they do not paste API keys, service secrets, or internal IDs.
+- Agents without MCP connected may still start normal setup with `POST https://dealdash.neonoir.ai/api/agent/auth/start` and send only the returned approval link to the user.
 - Public docs and the public agent kit must use placeholders only and must not include real tokens, database URLs, user data, or private local paths.
 - Scope logs by `req.user.userId`.
 - Sanitize logs to safe metadata only.
